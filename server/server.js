@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const collegeRoutes = require("./routes/collegeRoutes");
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ connectDB();
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
-
+app.use("/api/colleges", collegeRoutes);
 app.get("/", (req, res) => {
   res.send("CampusIQ Backend Running");
 });
