@@ -29,9 +29,25 @@ const studentSchema = new mongoose.Schema(
       ref: "College",
     },
 
+    profilePhoto: {
+      type: String,
+    },
+
     branch: {
       type: String,
       required: true,
+    },
+
+    sessionStart: {
+      type: Number,
+    },
+
+    sessionEnd: {
+      type: Number,
+    },
+
+    passingYear: {
+      type: Number,
     },
 
     currentSemester: {
@@ -42,11 +58,56 @@ const studentSchema = new mongoose.Schema(
       type: Number,
     },
 
+    currentBacklogs: {
+      type: Number,
+      default: 0,
+    },
+
+    targetRole: {
+      type: String,
+    },
+
     phone: {
       type: String,
     },
 
+    linkedinUrl: {
+      type: String,
+    },
+
+    githubUrl: {
+      type: String,
+    },
+
+    leetcodeUrl: {
+      type: String,
+    },
+
     skills: [String],
+
+    certifications: [
+      {
+        title: String,
+        issuer: String,
+        date: Date,
+      },
+    ],
+
+    internships: [
+      {
+        company: String,
+        role: String,
+        duration: String,
+      },
+    ],
+
+    projects: [
+      {
+        title: String,
+        description: String,
+        technologies: [String],
+      },
+    ],
 
     resumeUrl: {
       type: String,
