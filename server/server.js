@@ -6,6 +6,7 @@ const authRoutes = require("./routes/authRoutes");
 const collegeRoutes = require("./routes/collegeRoutes");
 const jobRoutes = require("./routes/jobRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 dotenv.config();
 
@@ -19,6 +20,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/colleges", collegeRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications",applicationRoutes);
+app.use("/api/dashboard",dashboardRoutes);
+
+
 app.get("/", (req, res) => {
   res.send("CampusIQ Backend Running");
 });
