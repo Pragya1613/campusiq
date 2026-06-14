@@ -7,6 +7,7 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import DashboardPage from "../pages/DashboardPage";
 import MyApplicationsPage from "../pages/MyApplicationsPage";
+import JobsPage from "../pages/JobsPage";
 
 function AppRoutes() {
   return (
@@ -27,6 +28,14 @@ function AppRoutes() {
          element={
           <ProtectedRoute>
             <MyApplicationsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/jobs"
+        element={
+          <ProtectedRoute>
+            <JobsPage />
           </ProtectedRoute>
         }
       />

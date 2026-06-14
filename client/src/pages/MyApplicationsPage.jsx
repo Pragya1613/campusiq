@@ -19,7 +19,7 @@ function MyApplicationsPage() {
         try {
           const data =
             await getMyApplications();
-
+            console.log("APPLICATIONS:", data);
           setApplications(data);
         } catch (error) {
           console.log(error);
