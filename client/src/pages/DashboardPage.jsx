@@ -28,43 +28,72 @@ function DashboardPage() {
   }, []);
 
   if (!stats) {
-    return <h2>Loading...</h2>;
+    return (
+      <h2 className="text-center text-xl mt-10">
+        Loading...
+      </h2>
+    );
   }
 
   return (
-    <div
-      style={{
-        padding: "30px",
-      }}
-    >
-      <h1>
+    <div className="p-8">
+      <h1 className="text-4xl font-bold text-blue-600 mb-8">
         Student Dashboard
       </h1>
 
-      <h3>
-        Applied:
-        {stats.applied}
-      </h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
 
-      <h3>
-        Shortlisted:
-        {stats.shortlisted}
-      </h3>
+        <div className="bg-white shadow-lg rounded-xl p-6">
+          <h2 className="text-gray-500">
+            Applied
+          </h2>
 
-      <h3>
-        Interviews:
-        {stats.interviews}
-      </h3>
+          <p className="text-3xl font-bold">
+            {stats.applied}
+          </p>
+        </div>
 
-      <h3>
-        Selected:
-        {stats.selected}
-      </h3>
+        <div className="bg-white shadow-lg rounded-xl p-6">
+          <h2 className="text-gray-500">
+            Shortlisted
+          </h2>
 
-      <h3>
-        Rejected:
-        {stats.rejected}
-      </h3>
+          <p className="text-3xl font-bold">
+            {stats.shortlisted}
+          </p>
+        </div>
+
+        <div className="bg-white shadow-lg rounded-xl p-6">
+          <h2 className="text-gray-500">
+            Interviews
+          </h2>
+
+          <p className="text-3xl font-bold">
+            {stats.interviews}
+          </p>
+        </div>
+
+        <div className="bg-white shadow-lg rounded-xl p-6">
+          <h2 className="text-gray-500">
+            Selected
+          </h2>
+
+          <p className="text-3xl font-bold">
+            {stats.selected}
+          </p>
+        </div>
+
+        <div className="bg-white shadow-lg rounded-xl p-6">
+          <h2 className="text-gray-500">
+            Rejected
+          </h2>
+
+          <p className="text-3xl font-bold">
+            {stats.rejected}
+          </p>
+        </div>
+
+      </div>
     </div>
   );
 }
