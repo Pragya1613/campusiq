@@ -43,7 +43,6 @@ const jobSchema = new mongoose.Schema(
     collegeId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "College",
-      required: true,
     },
 
     isActive: {

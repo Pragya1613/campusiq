@@ -8,6 +8,9 @@ import RegisterPage from "../pages/RegisterPage";
 import DashboardPage from "../pages/DashboardPage";
 import MyApplicationsPage from "../pages/MyApplicationsPage";
 import JobsPage from "../pages/JobsPage";
+import CreateJobPage from "../pages/CreateJobPage";
+import AdminApplicationsPage
+from "../pages/AdminApplicationsPage";
 
 function AppRoutes() {
   return (
@@ -39,6 +42,19 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      <Route
+         path="/create-job"
+           element={<CreateJobPage />}
+      />
+
+      <Route
+        path="/admin-applications"
+          element={
+            <AdminApplicationsPage />
+          }
+      />
+
     </Routes>
   );
 }
