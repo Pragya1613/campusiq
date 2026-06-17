@@ -1,4 +1,7 @@
-import { createContext, useState } from "react";
+import {
+  createContext,
+  useState,
+} from "react";
 
 export const AuthContext =
   createContext();
@@ -13,13 +16,29 @@ function AuthProvider({
       ) || null
     );
 
-  const login = (newToken) => {
+  const [role, setRole] =
+    useState(
+      localStorage.getItem(
+        "role"
+      ) || null
+    );
+
+  const login = (
+    newToken,
+    newRole
+  ) => {
     localStorage.setItem(
       "token",
       newToken
     );
 
+    localStorage.setItem(
+      "role",
+      newRole
+    );
+
     setToken(newToken);
+    setRole(newRole);
   };
 
   const logout = () => {
@@ -27,13 +46,19 @@ function AuthProvider({
       "token"
     );
 
+    localStorage.removeItem(
+      "role"
+    );
+
     setToken(null);
+    setRole(null);
   };
 
   return (
     <AuthContext.Provider
       value={{
         token,
+        role,
         login,
         logout,
         isAuthenticated:

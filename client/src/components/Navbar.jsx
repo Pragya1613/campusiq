@@ -3,8 +3,10 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
-  const { logout } =
-    useContext(AuthContext);
+  const {
+    logout,
+    role,
+  } = useContext(AuthContext);
 
   const navigate =
     useNavigate();
@@ -27,21 +29,29 @@ function Navbar() {
           Dashboard
         </Link>
 
-        <Link to="/jobs">
-          Jobs
-        </Link>
+        {role === "student" && (
+          <>
+            <Link to="/jobs">
+              Jobs
+            </Link>
 
-        <Link to="/applications">
-          Applications
-        </Link>
+            <Link to="/applications">
+              Applications
+            </Link>
+          </>
+        )}
 
-        <Link to="/create-job">
-          Create Job
-        </Link>
+        {role === "admin" && (
+          <>
+            <Link to="/create-job">
+              Create Job
+            </Link>
 
-        <Link to="/admin-applications">
-          Admin Panel
-        </Link>
+            <Link to="/admin-applications">
+              Admin Panel
+            </Link>
+          </>
+        )}
 
         <button
           onClick={handleLogout}

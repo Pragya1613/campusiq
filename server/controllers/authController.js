@@ -74,14 +74,15 @@ const loginStudent = async (req, res) => {
     delete studentData.password;
 
     const token = jwt.sign(
-     {
-        id: student._id,
-        email: student.email,
-     },
-     process.env.JWT_SECRET,
-     {
-         expiresIn: "7d",
-     }
+    {
+      id: student._id,
+      email: student.email,
+      role: student.role,
+    },
+    process.env.JWT_SECRET,
+    {
+    expiresIn: "7d",
+    }
     );
 
    res.status(200).json({

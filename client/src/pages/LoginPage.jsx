@@ -24,8 +24,11 @@ function LoginPage() {
         password
       );
 
-      login(data.token);
-
+      login(
+        data.token,
+        data.student.role
+      );
+      
       alert("Login Successful");
 
       navigate("/");
