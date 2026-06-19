@@ -41,85 +41,106 @@ function AdminApplicationsPage() {
     };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>All Applications</h1>
+    <div className="min-h-screen bg-gray-100 p-8">
 
-      {applications.map(
-        (application) => (
-          <div
-            key={application._id}
-          >
-            <h3>
-              Student:
-              {" "}
-              {
-                application.studentId
-                  ?.fullName
-              }
-            </h3>
+      <h1 className="text-4xl font-bold text-blue-600 mb-8">
+        Application Management
+      </h1>
 
-            <p>
-              Email:
-              {" "}
-              {
-                application.studentId
-                  ?.email
-              }
-            </p>
+      <div className="space-y-4">
 
-            <p>
-              Job:
-              {" "}
-              {
-                application.jobId
-                  ?.title
-              }
-            </p>
-
-            <p>
-              Current Status:
-              {" "}
-              {
-                application.status
-              }
-            </p>
-
-            <select
-              value={
-                application.status
-              }
-              onChange={(e) =>
-                handleStatusChange(
-                  application._id,
-                  e.target.value
-                )
-              }
+        {applications.map(
+          (application) => (
+            <div
+              key={application._id}
+              className="bg-white shadow-lg rounded-xl p-6 flex flex-col md:flex-row md:items-center md:justify-between"
             >
-              <option>
-                Applied
-              </option>
 
-              <option>
-                Shortlisted
-              </option>
+              <div>
 
-              <option>
-                Interview Scheduled
-              </option>
+                <h2 className="text-xl font-bold">
+                  {
+                    application
+                      .studentId
+                      ?.fullName
+                  }
+                </h2>
 
-              <option>
-                Selected
-              </option>
+                <p className="text-gray-500">
+                  {
+                    application
+                      .studentId
+                      ?.email
+                  }
+                </p>
 
-              <option>
-                Rejected
-              </option>
-            </select>
+                <p className="mt-2">
+                  Applied For:
+                  {" "}
+                  <span className="font-semibold">
+                    {
+                      application
+                        .jobId
+                        ?.title
+                    }
+                  </span>
+                </p>
 
-            <hr />
-          </div>
-        )
-      )}
+                <p className="text-sm text-gray-500 mt-1">
+                  Company:
+                  {" "}
+                  {
+                    application
+                      .jobId
+                      ?.companyName
+                  }
+                </p>
+
+              </div>
+
+              <div className="mt-4 md:mt-0">
+
+                <select
+                  value={
+                    application.status
+                  }
+                  onChange={(e) =>
+                    handleStatusChange(
+                      application._id,
+                      e.target.value
+                    )
+                  }
+                  className="border rounded-lg p-2"
+                >
+                  <option>
+                    Applied
+                  </option>
+
+                  <option>
+                    Shortlisted
+                  </option>
+
+                  <option>
+                    Interview Scheduled
+                  </option>
+
+                  <option>
+                    Selected
+                  </option>
+
+                  <option>
+                    Rejected
+                  </option>
+                </select>
+
+              </div>
+
+            </div>
+          )
+        )}
+
+      </div>
+
     </div>
   );
 }

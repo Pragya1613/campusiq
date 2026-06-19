@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { createJob } from "../services/jobService";
 
 function CreateJobPage() {
@@ -14,8 +13,10 @@ function CreateJobPage() {
   const [location, setLocation] =
     useState("");
 
-  const [packageOffered, setPackageOffered] =
-    useState("");
+  const [
+    packageOffered,
+    setPackageOffered,
+  ] = useState("");
 
   const [
     description,
@@ -34,10 +35,7 @@ function CreateJobPage() {
         description,
       };
 
-      const data =
-        await createJob(jobData);
-
-      console.log(data);
+      await createJob(jobData);
 
       alert(
         "Job Created Successfully"
@@ -52,20 +50,26 @@ function CreateJobPage() {
     } catch (error) {
       console.log(error);
 
-      alert("Failed to create job");
+      alert(
+        "Failed to create job"
+      );
     }
   };
 
   return (
-    <div
-      style={{
-        padding: "20px",
-      }}
-    >
-      <h1>Create Job</h1>
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-8">
 
-      <form onSubmit={handleSubmit}>
-        <div>
+      <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-2xl">
+
+        <h1 className="text-4xl font-bold text-blue-600 mb-8 text-center">
+          Create New Job
+        </h1>
+
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5"
+        >
+
           <input
             type="text"
             placeholder="Job Title"
@@ -75,12 +79,9 @@ function CreateJobPage() {
                 e.target.value
               )
             }
+            className="w-full border rounded-lg p-3"
           />
-        </div>
 
-        <br />
-
-        <div>
           <input
             type="text"
             placeholder="Company Name"
@@ -90,12 +91,9 @@ function CreateJobPage() {
                 e.target.value
               )
             }
+            className="w-full border rounded-lg p-3"
           />
-        </div>
 
-        <br />
-
-        <div>
           <input
             type="text"
             placeholder="Location"
@@ -105,44 +103,43 @@ function CreateJobPage() {
                 e.target.value
               )
             }
+            className="w-full border rounded-lg p-3"
           />
-        </div>
 
-        <br />
-
-        <div>
           <input
             type="text"
-            placeholder="Package"
+            placeholder="Package (LPA)"
             value={packageOffered}
             onChange={(e) =>
               setPackageOffered(
                 e.target.value
               )
             }
+            className="w-full border rounded-lg p-3"
           />
-        </div>
 
-        <br />
-
-        <div>
           <textarea
-            placeholder="Description"
+            placeholder="Job Description"
             value={description}
             onChange={(e) =>
               setDescription(
                 e.target.value
               )
             }
+            rows="5"
+            className="w-full border rounded-lg p-3"
           />
-        </div>
 
-        <br />
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
+          >
+            Create Job
+          </button>
 
-        <button type="submit">
-          Create Job
-        </button>
-      </form>
+        </form>
+      </div>
+
     </div>
   );
 }
