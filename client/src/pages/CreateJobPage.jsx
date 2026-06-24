@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { createJob } from "../services/jobService";
 import PublicLayout from "../layouts/PublicLayout";
+
 function CreateJobPage() {
+
   const [title, setTitle] =
     useState("");
 
@@ -13,10 +15,8 @@ function CreateJobPage() {
   const [location, setLocation] =
     useState("");
 
-  const [
-    packageOffered,
-    setPackageOffered,
-  ] = useState("");
+  const [jobPackage, setJobPackage] =
+  useState("");
 
   const [
     description,
@@ -24,14 +24,16 @@ function CreateJobPage() {
   ] = useState("");
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     try {
+
       const jobData = {
         title,
         companyName,
         location,
-        packageOffered,
+        package: jobPackage,
         description,
       };
 
@@ -44,105 +46,160 @@ function CreateJobPage() {
       setTitle("");
       setCompanyName("");
       setLocation("");
-      setPackageOffered("");
+      setJobPackage("");
       setDescription("");
 
     } catch (error) {
+
       console.log(error);
 
       alert(
         "Failed to create job"
       );
+
     }
+
   };
 
   return (
     <PublicLayout>
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-8">
 
-      <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-2xl">
+      <div className="min-h-screen bg-gray-100 py-12 px-6">
 
-        <h1 className="text-4xl font-bold text-blue-600 mb-8 text-center">
-          Create New Job
-        </h1>
+        <div className="max-w-3xl mx-auto">
 
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-5"
-        >
+          <div className="bg-white rounded-3xl shadow-xl p-8">
 
-          <input
-            type="text"
-            placeholder="Job Title"
-            value={title}
-            onChange={(e) =>
-              setTitle(
-                e.target.value
-              )
-            }
-            className="w-full border rounded-lg p-3"
-          />
+            <div className="text-center mb-8">
 
-          <input
-            type="text"
-            placeholder="Company Name"
-            value={companyName}
-            onChange={(e) =>
-              setCompanyName(
-                e.target.value
-              )
-            }
-            className="w-full border rounded-lg p-3"
-          />
+              <i className="fa-solid fa-briefcase text-orange-500 text-5xl mb-4"></i>
 
-          <input
-            type="text"
-            placeholder="Location"
-            value={location}
-            onChange={(e) =>
-              setLocation(
-                e.target.value
-              )
-            }
-            className="w-full border rounded-lg p-3"
-          />
+              <h1 className="text-4xl font-bold text-[#172554]">
+                Create New Job
+              </h1>
 
-          <input
-            type="text"
-            placeholder="Package (LPA)"
-            value={packageOffered}
-            onChange={(e) =>
-              setPackageOffered(
-                e.target.value
-              )
-            }
-            className="w-full border rounded-lg p-3"
-          />
+              <p className="text-gray-500 mt-2">
+                Add a placement opportunity for students
+              </p>
 
-          <textarea
-            placeholder="Job Description"
-            value={description}
-            onChange={(e) =>
-              setDescription(
-                e.target.value
-              )
-            }
-            rows="5"
-            className="w-full border rounded-lg p-3"
-          />
+            </div>
 
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
-          >
-            Create Job
-          </button>
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-5"
+            >
 
-        </form>
+              <div className="relative">
+
+                <i className="fa-solid fa-laptop-code absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+
+                <input
+                  type="text"
+                  placeholder="Job Title"
+                  value={title}
+                  onChange={(e) =>
+                    setTitle(
+                      e.target.value
+                    )
+                  }
+                  className="w-full border rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                  required
+                />
+
+              </div>
+
+              <div className="relative">
+
+                <i className="fa-solid fa-building absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+
+                <input
+                  type="text"
+                  placeholder="Company Name"
+                  value={companyName}
+                  onChange={(e) =>
+                    setCompanyName(
+                      e.target.value
+                    )
+                  }
+                  className="w-full border rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                  required
+                />
+
+              </div>
+
+              <div className="relative">
+
+                <i className="fa-solid fa-location-dot absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+
+                <input
+                  type="text"
+                  placeholder="Location"
+                  value={location}
+                  onChange={(e) =>
+                    setLocation(
+                      e.target.value
+                    )
+                  }
+                  className="w-full border rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                  required
+                />
+
+              </div>
+
+              <div className="relative">
+
+                <i className="fa-solid fa-indian-rupee-sign absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+
+                <input
+                  type="number"
+                  placeholder="Package Offered (LPA)"
+                  value={jobPackage}
+                  onChange={(e) =>
+                    setJobPackage(
+                      e.target.value
+                    )
+                  }
+                  className="w-full border rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                  required
+                />
+
+              </div>
+
+              <div className="relative">
+
+                <i className="fa-solid fa-file-lines absolute left-4 top-5 text-gray-400"></i>
+
+                <textarea
+                  placeholder="Job Description"
+                  value={description}
+                  onChange={(e) =>
+                    setDescription(
+                      e.target.value
+                    )
+                  }
+                  rows="6"
+                  className="w-full border rounded-xl pt-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                  required
+                />
+
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-orange-500 text-white py-3 rounded-xl font-semibold hover:bg-orange-600 transition"
+              >
+                Create Job
+              </button>
+
+            </form>
+
+          </div>
+
+        </div>
+
       </div>
 
-    </div>
-   </PublicLayout>
+    </PublicLayout>
   );
 }
 

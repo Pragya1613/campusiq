@@ -14,7 +14,8 @@ import { AuthContext } from "../context/AuthContext";
 
 function LoginPage() {
 
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
   const { login } =
     useContext(AuthContext);
@@ -87,60 +88,62 @@ function LoginPage() {
   return (
     <PublicLayout>
 
-      <div className="min-h-[80vh] flex items-center justify-center bg-gray-100">
+      <div className="min-h-[80vh] flex items-center justify-center bg-gray-100 px-4">
 
-        <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
+        <div className="bg-white shadow-2xl rounded-3xl p-8 w-full max-w-md">
 
-          <h1 className="text-3xl font-bold text-center text-blue-600 mb-2">
-            Login to CampusIQ
-          </h1>
+          <div className="text-center mb-8">
 
-          <p className="text-center text-gray-500 mb-8">
-            Access your placement portal
-          </p>
+            <i className="fa-solid fa-graduation-cap text-orange-500 text-5xl mb-4"></i>
+
+            <h1 className="text-3xl font-bold text-[#172554]">
+              Welcome Back
+            </h1>
+
+            <p className="text-gray-500 mt-2">
+              Login to CampusIQ
+            </p>
+
+          </div>
 
           <form
             onSubmit={handleSubmit}
-            className="space-y-5"
+            className="space-y-4"
           >
 
-            <div>
+            <div className="relative">
 
-              <label className="block mb-2 font-medium">
-                Email
-              </label>
+              <i className="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
 
               <input
                 type="email"
+                placeholder="Email Address"
                 value={email}
                 onChange={(e) =>
                   setEmail(
                     e.target.value
                   )
                 }
-                className="w-full border rounded-lg px-4 py-3"
-                placeholder="Enter email"
+                className="w-full border rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-orange-400"
                 required
               />
 
             </div>
 
-            <div>
+            <div className="relative">
 
-              <label className="block mb-2 font-medium">
-                Password
-              </label>
+              <i className="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
 
               <input
                 type="password"
+                placeholder="Password"
                 value={password}
                 onChange={(e) =>
                   setPassword(
                     e.target.value
                   )
                 }
-                className="w-full border rounded-lg px-4 py-3"
-                placeholder="Enter password"
+                className="w-full border rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-orange-400"
                 required
               />
 
@@ -150,7 +153,7 @@ function LoginPage() {
 
               <button
                 type="button"
-                className="text-blue-600 text-sm hover:underline"
+                className="text-[#1E3A8A] text-sm hover:underline"
               >
                 Forgot Password?
               </button>
@@ -159,20 +162,20 @@ function LoginPage() {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
+              className="w-full bg-orange-500 text-white py-3 rounded-xl font-semibold hover:bg-orange-600 transition"
             >
               Login
             </button>
 
           </form>
 
-          <p className="text-center text-gray-600 mt-6">
+          <p className="text-center mt-6 text-gray-600">
 
             Don't have an account?{" "}
 
             <Link
               to="/register"
-              className="text-blue-600 font-semibold hover:underline"
+              className="text-[#1E3A8A] font-semibold hover:underline"
             >
               Register
             </Link>

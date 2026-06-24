@@ -34,10 +34,10 @@ function MyApplicationsPage() {
   ) => {
     switch (status) {
       case "Applied":
-        return "bg-yellow-100 text-yellow-700";
+        return "bg-blue-100 text-blue-700";
 
       case "Shortlisted":
-        return "bg-blue-100 text-blue-700";
+        return "bg-yellow-100 text-yellow-700";
 
       case "Interview Scheduled":
         return "bg-purple-100 text-purple-700";
@@ -57,7 +57,7 @@ function MyApplicationsPage() {
     <PublicLayout>
     <div className="min-h-screen bg-gray-100 p-8">
 
-      <h1 className="text-4xl font-bold text-blue-600 mb-8">
+      <h1 className="text-4xl font-bold text-[#1E3A8A] mb-8">
         My Applications
       </h1>
 

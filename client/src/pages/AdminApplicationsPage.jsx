@@ -44,7 +44,7 @@ function AdminApplicationsPage() {
     <PublicLayout>
     <div className="min-h-screen bg-gray-100 p-8">
 
-      <h1 className="text-4xl font-bold text-blue-600 mb-8">
+      <h1 className="text-4xl font-bold text-[#1E3A8A]  mb-8">
         Application Management
       </h1>
 

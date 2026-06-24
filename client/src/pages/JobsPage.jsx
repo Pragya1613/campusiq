@@ -4,76 +4,184 @@ import { getAllJobs } from "../services/jobService";
 import { applyForJob } from "../services/applicationService";
 
 function JobsPage() {
-  const [jobs, setJobs] = useState([]);
+
+  const [jobs, setJobs] =
+    useState([]);
+
+  const [search, setSearch] =
+    useState("");
 
   useEffect(() => {
     fetchJobs();
   }, []);
 
-  const fetchJobs = async () => {
-    try {
-      const data = await getAllJobs();
-      setJobs(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const fetchJobs =
+    async () => {
 
-  const handleApply = async (jobId) => {
-    try {
-      const data =
-        await applyForJob(jobId);
+      try {
 
-      alert(data.message);
-    } catch (error) {
-      alert(
-        error.response?.data?.message ||
-          "Application Failed"
-      );
-    }
-  };
+        const data =
+          await getAllJobs();
+
+        setJobs(data);
+
+      } catch (error) {
+        console.log(error);
+      }
+
+    };
+
+  const handleApply =
+    async (jobId) => {
+
+      try {
+
+        const data =
+          await applyForJob(jobId);
+
+        alert(data.message);
+
+      } catch (error) {
+
+        alert(
+          error.response?.data
+            ?.message ||
+            "Application Failed"
+        );
+
+      }
+
+    };
+
+  const filteredJobs =
+    jobs.filter((job) =>
+      job.title
+        .toLowerCase()
+        .includes(
+          search.toLowerCase()
+        ) ||
+      job.companyName
+        .toLowerCase()
+        .includes(
+          search.toLowerCase()
+        )
+    );
 
   return (
     <PublicLayout>
-    <div className="min-h-screen bg-gray-100 p-8">
 
-      <h1 className="text-4xl font-bold text-blue-600 mb-8">
-        Available Jobs
-      </h1>
+      <div className="min-h-screen bg-gray-100 px-6 py-10">
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="max-w-7xl mx-auto">
 
-        {jobs.map((job) => (
-          <div
-            key={job._id}
-            className="bg-white shadow-lg rounded-xl p-6 hover:shadow-2xl transition"
-          >
-            <h2 className="text-2xl font-bold mb-2">
-              {job.title}
-            </h2>
+          <h1 className="text-4xl font-bold text-[#172554] mb-6">
+            Available Jobs
+          </h1>
 
-            <p className="text-gray-600">
-              {job.companyName}
-            </p>
+          {/* Search Bar */}
 
-            <p className="text-gray-500">
-              📍 {job.location}
-            </p>
+          <div className="mb-8">
 
-            <button
-              onClick={() =>
-                handleApply(job._id)
+            <input
+              type="text"
+              placeholder="Search jobs or companies..."
+              value={search}
+              onChange={(e) =>
+                setSearch(
+                  e.target.value
+                )
               }
-              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-            >
-              Apply Now
-            </button>
+              className="w-full md:w-96 px-4 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+            />
+
           </div>
-        ))}
+
+          {/* Jobs Grid */}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+            {filteredJobs.length >
+            0 ? (
+
+              filteredJobs.map(
+                (job) => (
+
+                  <div
+                    key={job._id}
+                    className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 border border-gray-100"
+                  >
+
+                    <div className="flex justify-between items-start mb-4">
+
+                      <div>
+
+                        <h2 className="text-2xl font-bold text-[#172554]">
+                          {job.title}
+                        </h2>
+
+                        <p className="text-gray-600 font-medium mt-1">
+                          {job.companyName}
+                        </p>
+
+                      </div>
+
+                      <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
+                        {job.package ||
+                          "Package N/A"}
+                      </span>
+
+                    </div>
+
+                    <div className="space-y-2 mb-6 text-gray-600">
+
+                      <p>
+                        📍{" "}
+                        {job.location}
+                      </p>
+
+                      <p>
+                        🎓 Eligible
+                        Students
+                      </p>
+
+                      <p>
+                        ⏳ Active
+                        Opportunity
+                      </p>
+
+                    </div>
+
+                    <button
+                      onClick={() =>
+                        handleApply(
+                          job._id
+                        )
+                      }
+                      className="w-full bg-[#1E3A8A] text-white py-3 rounded-xl font-semibold hover:bg-[#172554] transition"
+                    >
+                      Apply Now
+                    </button>
+
+                  </div>
+
+                )
+              )
+
+            ) : (
+
+              <div className="col-span-full text-center text-gray-500 text-lg">
+                No Jobs Found
+              </div>
+
+            )}
+
+          </div>
+
+        </div>
 
       </div>
-    </div>
-   </PublicLayout>
+
+    </PublicLayout>
   );
 }
 

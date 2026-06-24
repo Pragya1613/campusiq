@@ -131,7 +131,7 @@ function ProfilePage() {
 
         <div className="bg-white shadow-xl rounded-2xl p-8">
 
-          <h1 className="text-4xl font-bold text-blue-600 mb-8 text-center">
+          <h1 className="text-4xl font-bold text-[#1E3A8A] mb-8 text-center">
             Complete Your Profile
           </h1>
 
@@ -224,7 +224,7 @@ function ProfilePage() {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
+              className="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-600 transition"
             >
               Save Profile
             </button>

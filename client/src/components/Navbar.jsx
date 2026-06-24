@@ -18,7 +18,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-blue-600 text-white px-8 py-4 flex justify-between items-center shadow-md">
+    <nav className="sticky top-0 z-50 bg-[#172554] backdrop-blur-sm text-white px-8 py-4 flex justify-between items-center shadow-md">
 
       <Link
         to="/"
@@ -40,7 +40,7 @@ function Navbar() {
 
             <Link
               to="/register"
-              className="bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-gray-100"
+              className="bg-[#F97316] text-white px-4 py-2 rounded-lg hover:bg-[#EA580C] transition"
             >
               Register
             </Link>

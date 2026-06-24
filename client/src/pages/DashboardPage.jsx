@@ -39,7 +39,7 @@ function DashboardPage() {
   return (
     <PublicLayout>
     <div className="p-8">
-      <h1 className="text-4xl font-bold text-blue-600 mb-8">
+      <h1 className="text-4xl font-bold text-[#1E3A8A] mb-8">
         Student Dashboard
       </h1>
 
