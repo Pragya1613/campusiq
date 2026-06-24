@@ -5,44 +5,68 @@ const jwt = require("jsonwebtoken");
 // Register Student
 const registerStudent = async (req, res) => {
   try {
+
     const {
       fullName,
       email,
       password,
       enrollmentNumber,
       branch,
+      role,
     } = req.body;
 
-    const existingStudent = await Student.findOne({ email });
+    const existingStudent =
+      await Student.findOne({
+        email,
+      });
 
     if (existingStudent) {
       return res.status(400).json({
-        message: "Student already exists",
+        message:
+          "Student already exists",
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword =
+      await bcrypt.hash(
+        password,
+        10
+      );
 
-    const student = await Student.create({
-      fullName,
-      email,
-      password: hashedPassword,
-      enrollmentNumber,
-      branch,
-    });
+const student = await Student.create({
+  fullName,
+  email,
+  password: hashedPassword,
 
-    const studentData = student.toObject();
+  role: role || "student",
+
+  enrollmentNumber:
+    role === "student"
+      ? enrollmentNumber
+      : undefined,
+
+  branch:
+    role === "student"
+      ? branch
+      : undefined,
+});
+    const studentData =
+      student.toObject();
+
     delete studentData.password;
 
     res.status(201).json({
-      message: "Student registered successfully",
+      message:
+        "Registration Successful",
       student: studentData,
     });
 
   } catch (error) {
+
     res.status(500).json({
       message: error.message,
     });
+
   }
 };
 

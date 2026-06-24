@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import PublicLayout from "../layouts/PublicLayout";
 import { getAllJobs } from "../services/jobService";
 import { applyForJob } from "../services/applicationService";
 
@@ -34,6 +34,7 @@ function JobsPage() {
   };
 
   return (
+    <PublicLayout>
     <div className="min-h-screen bg-gray-100 p-8">
 
       <h1 className="text-4xl font-bold text-blue-600 mb-8">
@@ -72,6 +73,7 @@ function JobsPage() {
 
       </div>
     </div>
+   </PublicLayout>
   );
 }
 

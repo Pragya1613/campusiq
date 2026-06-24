@@ -1,6 +1,13 @@
 import PublicLayout from "../layouts/PublicLayout";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 function HomePage() {
+  const {
+    isAuthenticated,
+  } = useContext(AuthContext);
+
   return (
     <PublicLayout>
       <div className="min-h-screen bg-gray-100">
@@ -17,30 +24,41 @@ function HomePage() {
           </p>
 
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Connect students, colleges and recruiters
+            Connect students and placement cells
             through a modern placement management
             platform.
           </p>
 
           <div className="mt-8 flex justify-center gap-4">
 
-            <a
-              href="/register"
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
-            >
-              Get Started
-            </a>
+            {!isAuthenticated && (
+              <>
+                <Link
+                  to="/get-started"
+                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+                >
+                  Get Started
+                </Link>
 
-            <a
-              href="/login"
-              className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50"
-            >
-              Login
-            </a>
+                <Link
+                  to="/login"
+                  className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50"
+                >
+                  Login
+                </Link>
+              </>
+            )}
+
+            {isAuthenticated && (
+              <Link
+                to="/dashboard"
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+              >
+                Go To Dashboard
+              </Link>
+            )}
 
           </div>
-
-          {/* Stats */}
 
           <div className="flex justify-center gap-8 mt-16 flex-wrap">
 
@@ -69,8 +87,6 @@ function HomePage() {
 
         </div>
 
-        {/* Features */}
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-10 pb-20">
 
           <div className="bg-white shadow-lg rounded-xl p-6 text-center">
@@ -79,8 +95,9 @@ function HomePage() {
             </h3>
 
             <p className="text-gray-500 mt-2">
-              Manage profiles, apply for jobs
-              and track applications.
+              Create profiles, apply for jobs,
+              track application status and manage
+              your placement journey.
             </p>
           </div>
 
@@ -90,33 +107,24 @@ function HomePage() {
             </h3>
 
             <p className="text-gray-500 mt-2">
-              Monitor placements and manage
-              drives efficiently.
+              Monitor student placements,
+              maintain records and manage
+              recruitment drives efficiently.
             </p>
           </div>
 
           <div className="bg-white shadow-lg rounded-xl p-6 text-center">
             <h3 className="text-2xl font-bold">
-              Recruiters
+              Placement Cell
             </h3>
 
             <p className="text-gray-500 mt-2">
-              Post jobs and discover top
-              talent quickly.
+              Create jobs, manage applications
+              and monitor placements.
             </p>
           </div>
 
         </div>
-
-        {/* Footer */}
-
-        <footer className="bg-white py-6 text-center border-t">
-
-          <p className="text-gray-500">
-            © 2026 CampusIQ | Smart Placement Portal
-          </p>
-
-        </footer>
 
       </div>
     </PublicLayout>

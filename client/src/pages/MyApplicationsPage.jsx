@@ -2,7 +2,7 @@ import {
   useEffect,
   useState,
 } from "react";
-
+import PublicLayout from "../layouts/PublicLayout";
 import {
   getMyApplications,
 } from "../services/applicationService";
@@ -54,6 +54,7 @@ function MyApplicationsPage() {
   };
 
   return (
+    <PublicLayout>
     <div className="min-h-screen bg-gray-100 p-8">
 
       <h1 className="text-4xl font-bold text-blue-600 mb-8">
@@ -97,6 +98,7 @@ function MyApplicationsPage() {
 
       </div>
     </div>
+    </PublicLayout>
   );
 }
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createJob } from "../services/jobService";
-
+import PublicLayout from "../layouts/PublicLayout";
 function CreateJobPage() {
   const [title, setTitle] =
     useState("");
@@ -57,6 +57,7 @@ function CreateJobPage() {
   };
 
   return (
+    <PublicLayout>
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-8">
 
       <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-2xl">
@@ -141,6 +142,7 @@ function CreateJobPage() {
       </div>
 
     </div>
+   </PublicLayout>
   );
 }
 
