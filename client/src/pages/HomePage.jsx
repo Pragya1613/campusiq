@@ -1,5 +1,6 @@
 import PublicLayout from "../layouts/PublicLayout";
 import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
 
 function HomePage() {
   return (
@@ -8,7 +9,7 @@ function HomePage() {
 
         {/* Hero Section */}
 
-        <section className="text-center py-24 px-6 bg-gradient-to-r from-slate-900 via-indigo-900 to-cyan-800 text-white">
+        <section className="text-center py-20 px-6 bg-gradient-to-r from-slate-900 via-indigo-900 to-cyan-800 text-white">
 
           <h1 className="text-6xl font-bold">
             CampusIQ
@@ -234,6 +235,7 @@ function HomePage() {
 
         </section>
 
+      <Footer/>
       </div>
     </PublicLayout>
   );

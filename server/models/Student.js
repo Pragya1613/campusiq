@@ -58,10 +58,14 @@ const studentSchema = new mongoose.Schema(
 
     currentSemester: {
       type: Number,
+      min:1,
+      max:8,
     },
 
     cgpa: {
       type: Number,
+      min:0,
+      max:10,
     },
 
     currentBacklogs: {
@@ -117,6 +121,11 @@ const studentSchema = new mongoose.Schema(
 
     resumeUrl: {
       type: String,
+    },
+
+    resumeName: {
+      type: String,
+      default: "",
     },
 
     profileCompleted: {

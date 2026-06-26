@@ -1,3 +1,5 @@
+const cloudinary = require("../config/cloudinary");
+const streamifier = require("streamifier");
 const Student = require("../models/Student");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -139,31 +141,90 @@ const getCurrentStudent = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
+
   try {
+
     const student = await Student.findById(req.user.id);
 
     if (!student) {
+
       return res.status(404).json({
         message: "Student not found",
       });
+
     }
 
+    // =============================
+    // Resume Upload
+    // =============================
+
+    if (req.file) {
+
+      const uploadToCloudinary = () => {
+
+        return new Promise((resolve, reject) => {
+
+          const uploadStream =
+            cloudinary.uploader.upload_stream(
+
+              {
+                folder: "CampusIQ/Resumes",
+                resource_type: "raw",
+              },
+
+              (error, result) => {
+
+                if (error) {
+
+                  return reject(error);
+
+                }
+
+                resolve(result);
+
+              }
+
+            );
+
+          streamifier
+            .createReadStream(req.file.buffer)
+            .pipe(uploadStream);
+
+        });
+
+      };
+
+      const uploadedFile =
+        await uploadToCloudinary();
+
+      student.resumeUrl = uploadedFile.secure_url;
+
+      student.resumeName = req.file.originalname;
+
+    }
+
+    // =============================
+    // Basic Details
+    // =============================
+
     student.phone =
-      req.body.phone ?? student.phone;
+      req.body.phone ??
+      student.phone;
 
     student.cgpa =
-      req.body.cgpa ?? student.cgpa;
+      req.body.cgpa ??
+      student.cgpa;
 
     student.currentSemester =
       req.body.currentSemester ??
       student.currentSemester;
 
-    student.skills =
-      req.body.skills ?? student.skills;
+    if (req.body.skills) {
 
-    student.resumeUrl =
-      req.body.resumeUrl ??
-      student.resumeUrl;
+      student.skills =
+        JSON.parse(req.body.skills);
+
+    }
 
     student.profilePhoto =
       req.body.profilePhoto ??
@@ -201,17 +262,26 @@ const updateProfile = async (req, res) => {
       req.body.leetcodeUrl ??
       student.leetcodeUrl;
 
-    student.certifications =
-      req.body.certifications ??
-      student.certifications;
+    if (req.body.certifications) {
 
-    student.internships =
-      req.body.internships ??
-      student.internships;
+      student.certifications =
+        JSON.parse(req.body.certifications);
 
-    student.projects =
-      req.body.projects ??
-      student.projects;
+    }
+
+    if (req.body.internships) {
+
+      student.internships =
+        JSON.parse(req.body.internships);
+
+    }
+
+    if (req.body.projects) {
+
+      student.projects =
+        JSON.parse(req.body.projects);
+
+    }
 
     student.profileCompleted = true;
 
@@ -223,16 +293,31 @@ const updateProfile = async (req, res) => {
 
     delete studentData.password;
 
-    res.status(200).json({
-      message: "Profile updated successfully",
-      student: studentData,
+    return res.status(200).json({
+
+      message:
+        "Profile updated successfully",
+
+      student:
+        studentData,
+
     });
 
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
   }
+
+  catch (error) {
+
+    console.error(error);
+
+    return res.status(500).json({
+
+      message:
+        error.message,
+
+    });
+
+  }
+
 };
 
 const getProfile = async (req, res) => {

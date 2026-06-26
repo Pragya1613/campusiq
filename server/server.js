@@ -1,15 +1,17 @@
 const express = require("express");
 const dotenv = require("dotenv");
+
+dotenv.config();   // <-- YAHI PE
+
 const cors = require("cors");
 
 const connectDB = require("./config/db");
+
 const authRoutes = require("./routes/authRoutes");
 const collegeRoutes = require("./routes/collegeRoutes");
 const jobRoutes = require("./routes/jobRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
-
-dotenv.config();
 
 const app = express();
 

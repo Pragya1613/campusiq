@@ -1,5 +1,4 @@
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 function PublicLayout({
   children,
@@ -7,8 +6,9 @@ function PublicLayout({
   return (
     <>
       <Navbar />
+      <main>
       {children}
-      <Footer />
+      </main>
     </>
   );
 }

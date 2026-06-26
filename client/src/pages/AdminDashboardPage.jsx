@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
+import PublicLayout from "../layouts/PublicLayout";
 import api from "../services/api";
 
-import PublicLayout from "../layouts/PublicLayout";
-
 function AdminDashboardPage() {
+
   const [stats, setStats] =
     useState(null);
 
   useEffect(() => {
+
     const fetchStats =
       async () => {
+
         try {
+
           const response =
             await api.get(
               "/dashboard"
@@ -19,85 +22,130 @@ function AdminDashboardPage() {
           setStats(
             response.data
           );
+
         } catch (error) {
+
           console.log(error);
+
         }
+
       };
 
     fetchStats();
+
   }, []);
 
   if (!stats) {
+
     return (
       <PublicLayout>
-        <div className="min-h-screen flex items-center justify-center">
-          <h2 className="text-2xl font-semibold">
-            Loading...
+        <div className="min-h-screen flex justify-center items-center">
+          <h2 className="text-2xl font-semibold text-gray-600">
+            Loading Dashboard...
           </h2>
         </div>
       </PublicLayout>
     );
+
   }
 
   return (
     <PublicLayout>
 
-      <div className="min-h-screen bg-gray-100 p-8">
+      <div className="min-h-screen bg-gray-100 px-6 py-10">
 
-        <h1 className="text-4xl font-bold text-[#1E3A8A]  mb-8">
-          Admin Dashboard
-        </h1>
+        <div className="max-w-7xl mx-auto">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+          <h1 className="text-4xl font-bold text-[#172554] mb-2">
+            Admin Dashboard
+          </h1>
 
-          <div className="bg-white shadow-lg rounded-xl p-6 text-center">
-            <h3 className="text-gray-500">
-              Total Students
-            </h3>
+          <p className="text-gray-500 mb-8">
+            Manage students, jobs and applications
+          </p>
 
-            <h2 className="text-4xl font-bold text-blue-600 mt-2">
-              {stats.totalStudents}
-            </h2>
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
 
-          <div className="bg-white shadow-lg rounded-xl p-6 text-center">
-            <h3 className="text-gray-500">
-              Total Jobs
-            </h3>
+            {/* Total Students */}
 
-            <h2 className="text-4xl font-bold text-green-600 mt-2">
-              {stats.totalJobs}
-            </h2>
-          </div>
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 text-center border-t-4 border-blue-500">
 
-          <div className="bg-white shadow-lg rounded-xl p-6 text-center">
-            <h3 className="text-gray-500">
-              Active Jobs
-            </h3>
+              <i className="fa-solid fa-user-graduate text-4xl text-blue-500 mb-3"></i>
 
-            <h2 className="text-4xl font-bold text-purple-600 mt-2">
-              {stats.activeJobs}
-            </h2>
-          </div>
+              <h3 className="text-gray-500">
+                Total Students
+              </h3>
 
-          <div className="bg-white shadow-lg rounded-xl p-6 text-center">
-            <h3 className="text-gray-500">
-              Applications
-            </h3>
+              <h2 className="text-4xl font-bold text-[#172554] mt-2">
+                {stats.totalStudents}
+              </h2>
 
-            <h2 className="text-4xl font-bold text-orange-600 mt-2">
-              {stats.totalApplications}
-            </h2>
-          </div>
+            </div>
 
-          <div className="bg-white shadow-lg rounded-xl p-6 text-center">
-            <h3 className="text-gray-500">
-              Selected
-            </h3>
+            {/* Total Jobs */}
 
-            <h2 className="text-4xl font-bold text-red-600 mt-2">
-              {stats.selectedStudents}
-            </h2>
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 text-center border-t-4 border-green-500">
+
+              <i className="fa-solid fa-briefcase text-4xl text-green-500 mb-3"></i>
+
+              <h3 className="text-gray-500">
+                Total Jobs
+              </h3>
+
+              <h2 className="text-4xl font-bold text-[#172554] mt-2">
+                {stats.totalJobs}
+              </h2>
+
+            </div>
+
+            {/* Active Jobs */}
+
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 text-center border-t-4 border-orange-500">
+
+              <i className="fa-solid fa-fire text-4xl text-orange-500 mb-3"></i>
+
+              <h3 className="text-gray-500">
+                Active Jobs
+              </h3>
+
+              <h2 className="text-4xl font-bold text-[#172554] mt-2">
+                {stats.activeJobs}
+              </h2>
+
+            </div>
+
+            {/* Applications */}
+
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 text-center border-t-4 border-purple-500">
+
+              <i className="fa-solid fa-file-lines text-4xl text-purple-500 mb-3"></i>
+
+              <h3 className="text-gray-500">
+                Applications
+              </h3>
+
+              <h2 className="text-4xl font-bold text-[#172554] mt-2">
+                {stats.totalApplications}
+              </h2>
+
+            </div>
+
+            {/* Selected */}
+
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 text-center border-t-4 border-yellow-500">
+
+              <i className="fa-solid fa-trophy text-4xl text-yellow-500 mb-3"></i>
+
+              <h3 className="text-gray-500">
+                Selected
+              </h3>
+
+              <h2 className="text-4xl font-bold text-[#172554] mt-2">
+                {stats.selectedStudents}
+              </h2>
+
+            </div>
+
           </div>
 
         </div>
