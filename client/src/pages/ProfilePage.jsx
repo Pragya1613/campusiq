@@ -228,23 +228,33 @@ function ProfilePage() {
 
     <PublicLayout>
 
-      <div className="min-h-screen bg-gray-100 py-10 px-6">
+      <div className="min-h-screen bg-slate-50 py-12 px-6">
 
         <div className="max-w-5xl mx-auto">
 
-          <div className="bg-white rounded-3xl shadow-xl p-10">
+          <div className="bg-white border border-slate-200 rounded-3xl shadow-sm p-10">
 
             <div className="text-center mb-10">
 
-              <i className="fa-solid fa-user-graduate text-5xl text-orange-500 mb-4"></i>
+              <div className="w-20 h-20 mx-auto rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center mb-5">
 
-              <h1 className="text-4xl font-bold text-[#172554]">
+              <i className="fa-regular fa-user text-3xl text-slate-600"></i>
+              
+              </div>
 
-                Complete Your Profile
+              <h1 className="text-2xl font-bold text-slate-900">
+
+                <h1 className="text-3xl font-bold text-slate-900">
+                  Welcome back, {formData.fullName.split(" ")[0]} 
+                </h1>
+
+                <p className="text-slate-500 font-medium mt-2">
+                  Keep your profile updated to improve your placement opportunities.
+                </p>
 
               </h1>
 
-              <p className="text-gray-500 mt-2">
+              <p className="text-slate-500 mt-3">
 
                 Build your placement-ready profile
 
@@ -254,16 +264,16 @@ function ProfilePage() {
 
             <form
               onSubmit={handleSubmit}
-              className="space-y-10"
+              className="space-y-8"
             >
             
                           {/* Basic Information */}
 
-              <div>
+              <div className="bg-white border border-slate-200 rounded-2xl p-7">
 
                 <div className="flex items-center gap-3 mb-6">
 
-                  <i className="fa-solid fa-address-card text-orange-500 text-xl"></i>
+                  <i className="fa-solid fa-address-card text-slate-700 text-lg"></i>
 
                   <h2 className="text-2xl font-semibold text-[#172554]">
 
@@ -279,28 +289,28 @@ function ProfilePage() {
                     type="text"
                     value={formData.fullName}
                     readOnly
-                    className="border rounded-xl p-3 bg-gray-100 text-gray-600"
+                    className="w-full border border-slate-200 bg-slate-50 rounded-xl px-4 py-3 text-slate-700 font-medium shadow-sm"
                   />
 
                   <input
                     type="email"
                     value={formData.email}
                     readOnly
-                    className="border rounded-xl p-3 bg-gray-100 text-gray-600"
+                    className="w-full border border-slate-200 bg-slate-50 rounded-xl px-4 py-3 text-slate-700 font-medium shadow-sm"
                   />
 
                   <input
                     type="text"
                     value={formData.enrollmentNumber}
                     readOnly
-                    className="border rounded-xl p-3 bg-gray-100 text-gray-600"
+                    className="w-full border border-slate-200 bg-slate-50 rounded-xl px-4 py-3 text-slate-700 font-medium shadow-sm"
                   />
 
                   <input
                     type="text"
                     value={formData.branch}
                     readOnly
-                    className="border rounded-xl p-3 bg-gray-100 text-gray-600"
+                    className="w-full border border-slate-200 bg-slate-50 rounded-xl px-4 py-3 text-slate-700 font-medium shadow-sm"
                   />
 
                 </div>
@@ -309,11 +319,11 @@ function ProfilePage() {
 
               {/* Academic Details */}
 
-              <div>
+              <div className="bg-white border border-slate-200 rounded-2xl p-7">
 
                 <div className="flex items-center gap-3 mb-6">
 
-                  <i className="fa-solid fa-graduation-cap text-orange-500 text-xl"></i>
+                  <i className="fa-solid fa-graduation-cap text-slate-700 text-lg"></i>
 
                   <h2 className="text-2xl font-semibold text-[#172554]">
 
@@ -331,7 +341,7 @@ function ProfilePage() {
                     placeholder="Phone Number"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#172554] focus:border-[#172554] transition-all duration-200"
                   />
 
                   <input
@@ -343,7 +353,7 @@ function ProfilePage() {
                     placeholder="CGPA"
                     value={formData.cgpa}
                     onChange={handleChange}
-                    className="border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#172554] focus:border-[#172554] transition-all duration-200"
                   />
 
                   <input
@@ -354,7 +364,7 @@ function ProfilePage() {
                     placeholder="Current Semester"
                     value={formData.currentSemester}
                     onChange={handleChange}
-                    className="border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#172554] focus:border-[#172554] transition-all duration-200"
                   />
 
                 </div>
@@ -363,11 +373,11 @@ function ProfilePage() {
 
               {/* Skills */}
 
-              <div>
+              <div className="bg-white border border-slate-200 rounded-2xl p-7">
 
                 <div className="flex items-center gap-3 mb-6">
 
-                  <i className="fa-solid fa-layer-group text-orange-500 text-xl"></i>
+                  <i className="fa-solid fa-layer-group text-slate-700 text-lg"></i>
 
                   <h2 className="text-2xl font-semibold text-[#172554]">
 
@@ -379,11 +389,11 @@ function ProfilePage() {
 
                 <textarea
                   name="skills"
-                  rows="4"
-                  placeholder="React, Node.js, Express, MongoDB, Tailwind CSS..."
+                  rows="5"
+                  placeholder="Example: React, Node.js, Express.js, MongoDB, Tailwind CSS, Java, C++, SQL"
                   value={formData.skills}
                   onChange={handleChange}
-                  className="w-full border rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                  className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#172554] focus:border-[#172554] transition-all duration-200"
                 />
 
                 <p className="text-sm text-gray-500 mt-2">
@@ -396,11 +406,11 @@ function ProfilePage() {
 
               {/* Coding Profiles */}
 
-              <div>
+              <div className="bg-white border border-slate-200 rounded-2xl p-7">
 
                 <div className="flex items-center gap-3 mb-6">
 
-                  <i className="fa-solid fa-link text-orange-500 text-xl"></i>
+                  <i className="fa-solid fa-link text-slate-700 text-lg"></i>
 
                   <h2 className="text-2xl font-semibold text-[#172554]">
 
@@ -411,15 +421,25 @@ function ProfilePage() {
                 </div>
 
                 <div className="space-y-4">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
 
+                    GitHub
+
+                    </label>
                   <input
                     type="url"
                     name="githubUrl"
                     placeholder="GitHub Profile URL"
                     value={formData.githubUrl}
                     onChange={handleChange}
-                    className="w-full border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#172554] focus:border-[#172554] transition-all duration-200"
                   />
+
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+
+                      LinkedIn
+
+                      </label>
 
                   <input
                     type="url"
@@ -427,8 +447,14 @@ function ProfilePage() {
                     placeholder="LinkedIn Profile URL"
                     value={formData.linkedinUrl}
                     onChange={handleChange}
-                    className="w-full border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#172554] focus:border-[#172554] transition-all duration-200"
                   />
+
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+
+                    LeetCode  
+
+                  </label>
 
                   <input
                     type="url"
@@ -436,7 +462,7 @@ function ProfilePage() {
                     placeholder="LeetCode Profile URL"
                     value={formData.leetcodeUrl}
                     onChange={handleChange}
-                    className="w-full border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#172554] focus:border-[#172554] transition-all duration-200"
                   />
 
                 </div>
@@ -445,11 +471,11 @@ function ProfilePage() {
 
                             {/* Resume */}
 
-              <div>
+              <div className="bg-white border border-slate-200 rounded-2xl p-7">
 
                 <div className="flex items-center gap-3 mb-6">
 
-                  <i className="fa-solid fa-file-lines text-orange-500 text-xl"></i>
+                  <i className="fa-solid fa-file-lines text-slate-700 text-lg"></i>
 
                   <h2 className="text-2xl font-semibold text-[#172554]">
 
@@ -475,9 +501,17 @@ function ProfilePage() {
 
                         <h3 className="text-xl font-semibold text-[#172554]">
 
-                          Upload Resume
+                          {formData.resumeUrl
+                            ? "Resume Uploaded"
+                            : "Upload Resume"}
 
                         </h3>
+
+                        <p className="text-sm text-slate-500 mt-1">
+
+                          Upload your latest placement-ready resume.
+
+                        </p>
 
                         <p className="text-gray-500 text-sm">
 
@@ -524,7 +558,9 @@ function ProfilePage() {
 
                           <p className="text-sm text-gray-500">
 
-                            Ready to upload
+                            Selected
+
+                            Waiting to save changes
 
                           </p>
 
@@ -553,7 +589,13 @@ function ProfilePage() {
                         </p>
                 
                         <p className="text-sm text-green-600">
-                          Resume uploaded successfully
+                          Uploaded Successfully
+                        </p>
+
+                        <p className="text-xs text-slate-500 mt-1">
+
+                          Ready for placement applications
+
                         </p>
                 
                       </div>
@@ -565,10 +607,11 @@ function ProfilePage() {
                       <a
                         href={formData.resumeUrl}
                         target="_blank"
-                        rel="noreferrer"
-                        className="px-4 py-2 rounded-lg bg-[#172554] text-white hover:bg-[#0f1d46] transition"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#172554] text-white hover:bg-[#0f1d46] transition"
                       >
-                        View
+                        <i className="fa-regular fa-eye"></i>
+                        <span>Preview</span>
                       </a>
                 
                       <button
@@ -602,12 +645,12 @@ function ProfilePage() {
                 
                         }}
                   
-                          className="px-4 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition"
+                          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-orange-500 text-white hover:bg-orange-600 transition"
                   
                         >
                   
-                          Download
-                  
+                          <i className="fa-solid fa-download"></i>
+                          <span>Download PDF</span>
                         </button>
                   
                       </div>
@@ -628,11 +671,11 @@ function ProfilePage() {
 
                 type="submit"
 
-                className="w-full bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-xl text-lg font-semibold transition duration-300"
+                className="w-full bg-[#172554] hover scale-[1.01]:bg-[#0f1d46] text-white py-4 rounded-xl text-lg font-semibold transition duration-300"
 
               >
 
-                Save Profile
+                Save Changes
 
               </button>
 
