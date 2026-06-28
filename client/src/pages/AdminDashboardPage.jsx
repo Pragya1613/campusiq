@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import PublicLayout from "../layouts/PublicLayout";
 import api from "../services/api";
 
@@ -147,6 +148,65 @@ function AdminDashboardPage() {
             </div>
 
           </div>
+
+          {/* Quick Actions */}
+
+            <div className="mt-12">
+              
+              <h2 className="text-2xl font-bold text-[#172554] mb-6">
+                Quick Actions
+              </h2>
+              
+              <div className="grid md:grid-cols-3 gap-6">
+              
+                <Link
+                  to="/create-job"
+                  className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 border border-gray-200"
+                >
+                  <i className="fa-solid fa-plus text-3xl text-green-500 mb-4"></i>
+              
+                  <h3 className="text-xl font-semibold text-[#172554]">
+                    Create Job
+                  </h3>
+              
+                  <p className="text-gray-500 mt-2">
+                    Publish a new placement opportunity.
+                  </p>
+                </Link>
+              
+                <Link
+                  to="/manage-jobs"
+                  className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 border border-gray-200"
+                >
+                  <i className="fa-solid fa-briefcase text-3xl text-blue-500 mb-4"></i>
+              
+                  <h3 className="text-xl font-semibold text-[#172554]">
+                    Manage Jobs
+                  </h3>
+              
+                  <p className="text-gray-500 mt-2">
+                    Edit, close or delete existing jobs.
+                  </p>
+                </Link>
+              
+                <Link
+                  to="/admin-applications"
+                  className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 border border-gray-200"
+                >
+                  <i className="fa-solid fa-file-lines text-3xl text-orange-500 mb-4"></i>
+              
+                  <h3 className="text-xl font-semibold text-[#172554]">
+                    Applications
+                  </h3>
+              
+                  <p className="text-gray-500 mt-2">
+                    Review and update application status.
+                  </p>
+                </Link>
+              
+              </div>
+              
+            </div>
 
         </div>
 

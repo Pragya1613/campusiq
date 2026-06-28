@@ -48,7 +48,7 @@ const getMyApplications = async (
         .populate("jobId")
         .populate(
           "studentId",
-          "fullName email"
+          "fullName email phone enrollmentNumber branch currentSemester cgpa currentBacklogs targetRole githubUrl linkedinUrl leetcodeUrl skills resumeUrl resumeName profilePhoto"
         );
 
     res.status(200).json(
@@ -72,7 +72,7 @@ const getAllApplications = async (
       await Application.find()
         .populate(
           "studentId",
-          "fullName email"
+          "fullName email phone enrollmentNumber branch currentSemester cgpa currentBacklogs targetRole githubUrl linkedinUrl leetcodeUrl skills resumeUrl resumeName profilePhoto"
         )
         .populate("jobId");
 

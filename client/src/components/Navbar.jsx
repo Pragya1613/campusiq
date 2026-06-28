@@ -76,21 +76,37 @@ function Navbar() {
 
         {isAuthenticated && role === "admin" && (
           <>
-            <Link to="/admin-dashboard">
+            <Link
+              to="/admin-dashboard"
+              className="hover:text-blue-100 transition"
+            >
               Dashboard
             </Link>
 
-            <Link to="/create-job">
+            <Link
+              to="/create-job"
+              className="hover:text-blue-100 transition"
+            >
               Create Job
             </Link>
 
-            <Link to="/admin-applications">
+            <Link
+              to="/manage-jobs"
+              className="hover:text-blue-100 transition"
+            >
+              Manage Jobs
+            </Link>
+
+            <Link
+              to="/admin-applications"
+              className="hover:text-blue-100 transition"
+            >
               Applications
             </Link>
 
             <button
               onClick={handleLogout}
-              className="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600"
+              className="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600 transition"
             >
               Logout
             </button>
@@ -98,7 +114,6 @@ function Navbar() {
         )}
 
       </div>
-
     </nav>
   );
 }

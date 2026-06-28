@@ -17,6 +17,7 @@ import CreateJobPage from "../pages/CreateJobPage";
 import AdminApplicationsPage from "../pages/AdminApplicationsPage";
 import ProfilePage
 from "../pages/ProfilePage";
+import ManageJobsPage from "../pages/ManageJobsPage";
 
 function AppRoutes() {
   return (
@@ -107,6 +108,11 @@ function AppRoutes() {
             <ProfilePage />
           </ProtectedRoute>
         }
+      />
+
+      <Route
+        path="/manage-jobs"
+          element={<ManageJobsPage />}
       />
 
     </Routes>

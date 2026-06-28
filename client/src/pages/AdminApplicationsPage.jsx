@@ -10,10 +10,18 @@ import {
   updateApplicationStatus,
 } from "../services/adminApplicationService";
 
+import StudentProfileModal from "../components/StudentProfileModal";
+
 function AdminApplicationsPage() {
 
   const [applications, setApplications] =
     useState([]);
+
+  const [selectedStudent, setSelectedStudent] =
+    useState(null);
+
+  const [showProfile, setShowProfile] =
+    useState(false);
 
   useEffect(() => {
     fetchApplications();
@@ -37,6 +45,9 @@ function AdminApplicationsPage() {
 
     };
 
+
+
+
   const handleStatusChange =
     async (id, status) => {
 
@@ -59,6 +70,61 @@ function AdminApplicationsPage() {
 
       }
 
+    };
+
+    const handleViewProfile = (
+      application
+    ) => {
+    
+      setSelectedStudent(
+        application.studentId
+      );
+    
+      setShowProfile(true);
+    
+    };
+
+    const handleDownloadResume =
+      async (application) => {
+      
+        try {
+        
+          const response =
+            await fetch(
+              application.studentId.resumeUrl
+            );
+          
+          const blob =
+            await response.blob();
+          
+          const url =
+            window.URL.createObjectURL(blob);
+          
+          const link =
+            document.createElement("a");
+          
+          link.href = url;
+          
+          link.download =
+            application.studentId.resumeName ||
+            "Resume.pdf";
+          
+          document.body.appendChild(link);
+          
+          link.click();
+          
+          link.remove();
+          
+          window.URL.revokeObjectURL(url);
+          
+        }
+      
+        catch (error) {
+        
+          console.log(error);
+        
+        }
+      
     };
 
   return (
@@ -102,57 +168,122 @@ function AdminApplicationsPage() {
 
                     <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-6">
 
-                      <div className="space-y-2">
+                      <div className="space-y-3">
 
-                        <h2 className="text-2xl font-bold text-[#172554]">
+                        <h2 className="text-2xl font-bold text-[#172554] flex items-center gap-3">
 
-                          <i className="fa-solid fa-user-graduate text-orange-500 mr-2"></i>
+                          <i className="fa-solid fa-user-graduate text-orange-500 text-xl"></i>
 
-                          {
-                            application
-                              .studentId
-                              ?.fullName
-                          }
+                          {application.studentId?.fullName}
 
                         </h2>
 
-                        <p className="text-gray-600">
-                          📧 {
-                            application
-                              .studentId
-                              ?.email
-                          }
+                        <p className="flex items-center text-gray-600">
+
+                          <i className="fa-solid fa-envelope text-slate-500 w-6"></i>
+
+                          <span>{application.studentId?.email}</span>
+
                         </p>
 
-                        <p className="text-gray-600">
-                          💼 Applied For:
-                          {" "}
-                          <span className="font-semibold">
-                            {
-                              application
-                                .jobId
-                                ?.title
-                            }
+                        <p className="flex items-center text-gray-600">
+
+                          <i className="fa-solid fa-briefcase text-amber-700 w-6"></i>
+
+                          <span>
+
+                            Applied For :
+
+                            <span className="font-semibold text-[#172554] ml-1">
+
+                              {application.jobId?.title}
+
+                            </span>
+
                           </span>
+
                         </p>
 
-                        <p className="text-gray-600">
-                          🏢 Company:
-                          {" "}
-                          {
-                            application
-                              .jobId
-                              ?.companyName
-                          }
+                        <p className="flex items-center text-gray-600">
+
+                          <i className="fa-solid fa-building text-blue-500 w-6"></i>
+
+                          <span>
+
+                            Company :
+
+                            <span className="font-semibold text-[#172554] ml-1">
+
+                              {application.jobId?.companyName}
+
+                            </span>
+
+                          </span>
+
                         </p>
 
-                        <p className="text-gray-600">
-                          📅 Applied On:
-                          {" "}
-                          {new Date(
-                            application.createdAt
-                          ).toLocaleDateString()}
+                        <p className="flex items-center text-gray-600">
+
+                          <i className="fa-solid fa-chart-line text-green-500 w-6"></i>
+
+                          <span>
+
+                            CGPA :
+
+                            <span className="font-semibold text-[#172554] ml-1">
+
+                              {application.studentId?.cgpa ?? "N/A"}
+
+                            </span>
+
+                          </span>
+
                         </p>
+
+                        <p className="flex items-center text-gray-600">
+
+                          <i className="fa-solid fa-calendar-days text-violet-500 w-6"></i>
+
+                          <span>
+
+                            Applied On :
+
+                            <span className="font-semibold text-[#172554] ml-1">
+
+                              {new Date(
+                                application.createdAt
+                              ).toLocaleDateString()}
+
+                            </span>
+                            
+                          </span>
+                            
+                        </p>  
+
+                        {application.studentId?.resumeUrl && (
+                        
+                          <div className="flex gap-3 mt-5">
+
+                            <button
+                              onClick={() => handleViewProfile(application)}
+                              className="px-4 py-2 rounded-lg bg-[#172554] text-white hover:bg-[#0f1d46] transition"
+                            >
+                              <i className="fa-solid fa-user mr-2"></i>
+                              View Profile
+                            </button>
+
+                          {application.studentId?.rsumeUrl &&(
+                            <button
+                              onClick={() => handleDownloadResume(application)}
+                              className="px-4 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition"
+                            >
+                              <i className="fa-solid fa-download mr-2"></i>
+                              Download Resume
+                            </button>
+                          )}
+                          </div>                       
+
+                        )}                                             
 
                       </div>
 
@@ -213,6 +344,15 @@ function AdminApplicationsPage() {
         </div>
 
       </div>
+
+    <StudentProfileModal
+      isOpen={showProfile}
+      student={selectedStudent}
+      onClose={() => {
+        setShowProfile(false);
+        setSelectedStudent(null);
+      }}
+    />
 
     </PublicLayout>
   );

@@ -135,17 +135,17 @@ function JobsPage() {
                     <div className="space-y-2 mb-6 text-gray-600">
 
                       <p>
-                        📍{" "}
+                        {" "}
                         {job.location}
                       </p>
 
                       <p>
-                        🎓 Eligible
+                         Eligible
                         Students
                       </p>
 
                       <p>
-                        ⏳ Active
+                         Active
                         Opportunity
                       </p>
 
