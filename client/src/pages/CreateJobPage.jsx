@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createJob } from "../services/jobService";
 import PublicLayout from "../layouts/PublicLayout";
+import toast from "react-hot-toast";
 
 function CreateJobPage() {
 
@@ -75,9 +76,7 @@ function CreateJobPage() {
 
         await createJob(jobData);
 
-        alert(
-          "Job Created Successfully"
-        );
+        toast.success("Job Created Successfully");
 
         setTitle("");
 
@@ -99,9 +98,7 @@ function CreateJobPage() {
 
         console.log(error);
 
-        alert(
-          "Failed To Create Job"
-        );
+        toast.error("Failed To Create Job");
 
       }
 

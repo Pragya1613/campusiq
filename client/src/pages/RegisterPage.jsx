@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 import PublicLayout from "../layouts/PublicLayout";
 import { registerStudent } from "../services/authService";
+import toast from "react-hot-toast";
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -36,13 +37,11 @@ function RegisterPage() {
         branch,
       });
 
-      alert(
-        "Registration Successful"
-      );
+      toast.success("Registration Successful");
 
       navigate("/login");
     } catch (error) {
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Registration Failed"
       );

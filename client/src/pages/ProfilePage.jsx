@@ -14,6 +14,8 @@ import {
   updateProfile,
 } from "../services/profileService";
 
+import toast from "react-hot-toast";
+
 function ProfilePage() {
 
   const navigate =
@@ -144,10 +146,8 @@ function ProfilePage() {
         "application/pdf"
       ) {
 
-        alert(
-          "Only PDF resumes are allowed."
-        );
-
+        toast.error("Only PDF resumes are allowed.");
+       
         return;
 
       }
@@ -157,9 +157,7 @@ function ProfilePage() {
         5 * 1024 * 1024
       ) {
 
-        alert(
-          "Maximum file size is 5 MB."
-        );
+        toast.error("Maximum file size is 5 MB.");
 
         return;
 
@@ -197,9 +195,7 @@ function ProfilePage() {
 
         });
 
-        alert(
-          "Profile Updated Successfully"
-        );
+        toast.success("Profile Updated Successfully");
 
         navigate(
           "/dashboard"
@@ -211,7 +207,7 @@ function ProfilePage() {
 
         console.log(error);
 
-        alert(
+        toast.error(
 
           error.response?.data
             ?.message ||

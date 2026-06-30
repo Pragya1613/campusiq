@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import PublicLayout from "../layouts/PublicLayout";
 import EditJobModal from "../components/EditJobModal";
+import ConfirmModal from "../components/ConfirmModal";
 
 import {
   getAllJobs,
   updateJob,
   deleteJob,
 } from "../services/jobService";
+import toast from "react-hot-toast";
+
 
 function ManageJobsPage() {
 
@@ -19,6 +22,12 @@ function ManageJobsPage() {
 
   const [showModal, setShowModal] =
     useState(false);
+
+  const [showDeleteModal, setShowDeleteModal] =
+    useState(false);
+
+  const [jobToDelete, setJobToDelete] =
+    useState(null); 
 
   const [loading, setLoading] =
     useState(true);
@@ -95,39 +104,31 @@ function ManageJobsPage() {
   // Delete Job
   // ============================
 
-  const handleDelete =
-    async (id) => {
+  const handleDelete = async () => {
 
-      const ok =
-        window.confirm(
-          "Delete this Job?"
-        );
+  try {
 
-      if (!ok) return;
+    await deleteJob(jobToDelete);
 
-      try {
+    toast.success("Job Deleted Successfully");
 
-        await deleteJob(id);
+    setShowDeleteModal(false);
 
-        alert(
-          "Job Deleted Successfully"
-        );
+    setJobToDelete(null);
 
-        fetchJobs();
+    fetchJobs();
 
-      }
+  }
 
-      catch (error) {
+  catch (error) {
 
-        console.log(error);
+    console.log(error);
 
-        alert(
-          "Failed To Delete Job"
-        );
+    toast.error("Failed To Delete Job");
 
-      }
+  }
 
-    };
+};
 
   // ============================
   // Save Updated Job
@@ -146,9 +147,7 @@ function ManageJobsPage() {
 
         );
 
-        alert(
-          "Job Updated Successfully"
-        );
+        toast.success("Job Updated Successfully");
 
         setShowModal(false);
 
@@ -162,9 +161,7 @@ function ManageJobsPage() {
 
         console.log(error);
 
-        alert(
-          "Failed To Update Job"
-        );
+        toast.error("Failed To Update Job");
 
       }
 
@@ -203,13 +200,13 @@ function ManageJobsPage() {
   
           <div className="max-w-7xl mx-auto">
   
-            <h1 className="text-4xl font-bold text-[#172554] mb-6">
-               <p className="text-gray-500">
+            <h1 className="text-4xl font-bold text-[#172554] mb-2">Manage Jobs</h1>
+               <p className="text-gray-500 mb-8">
 
                 Manage, update and monitor placement opportunities.
 
                 </p>
-            </h1>
+            
             <p className="text-slate-500 mt-2 mb-8">
 
                 Update or remove placement opportunities.
@@ -275,9 +272,9 @@ function ManageJobsPage() {
                           <i className="fa-solid fa-location-dot text-red-500 mr-2"></i>
                           {job.location}
                         </p>
-                        <p>
+                        
 
-                            <p>
+                        <p>
                                             
                             <i className="fa-solid fa-chart-line text-orange-500 mr-2"></i>
                                             
@@ -289,9 +286,9 @@ function ManageJobsPage() {
                                             
                             </span>
                                             
-                            </p>
-
                         </p>
+
+                        
   
                         <p>
                             <i className="fa-solid fa-circle-check text-green-500 mr-2"></i>
@@ -351,7 +348,10 @@ function ManageJobsPage() {
                             </button>
 
                             <button
-                              onClick={() => handleDelete(job._id)}
+                              onClick={() => {
+                                setJobToDelete(job._id);
+                                setShowDeleteModal(true);
+                              }}
                               className="flex-1 bg-red-500 text-white py-3 rounded-xl hover:bg-red-600 transition"
                             >
 
@@ -404,6 +404,30 @@ function ManageJobsPage() {
             }}
         onSave={handleSave}
         />
+
+        <ConfirmModal
+        
+          isOpen={showDeleteModal}
+                
+          title="Delete Job"
+                
+          message="Are you sure you want to permanently delete this job? This action cannot be undone."
+                
+          confirmText="Delete"
+                
+          cancelText="Cancel"
+                
+          onConfirm={handleDelete}
+                
+          onClose={() => {
+        
+            setShowDeleteModal(false);
+        
+            setJobToDelete(null);
+        
+          }}
+        
+        />        
   
       </PublicLayout>
     );

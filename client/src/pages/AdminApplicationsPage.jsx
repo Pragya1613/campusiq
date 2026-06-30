@@ -11,6 +11,7 @@ import {
 } from "../services/adminApplicationService";
 
 import StudentProfileModal from "../components/StudentProfileModal";
+import toast from "react-hot-toast";
 
 function AdminApplicationsPage() {
 
@@ -58,9 +59,7 @@ function AdminApplicationsPage() {
           status
         );
 
-        alert(
-          "Status Updated Successfully"
-        );
+        toast.success("Status Updated Successfully");
 
         fetchApplications();
 
@@ -268,11 +267,12 @@ function AdminApplicationsPage() {
                               onClick={() => handleViewProfile(application)}
                               className="px-4 py-2 rounded-lg bg-[#172554] text-white hover:bg-[#0f1d46] transition"
                             >
-                              <i className="fa-solid fa-user mr-2"></i>
+                              <i className="fa-solid fa-id-card mr-2"></i>
                               View Profile
                             </button>
 
-                          {application.studentId?.rsumeUrl &&(
+                          {application.studentId?.resumeUrl &&(
+
                             <button
                               onClick={() => handleDownloadResume(application)}
                               className="px-4 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition"
@@ -280,6 +280,7 @@ function AdminApplicationsPage() {
                               <i className="fa-solid fa-download mr-2"></i>
                               Download Resume
                             </button>
+
                           )}
                           </div>                       
 
@@ -287,48 +288,86 @@ function AdminApplicationsPage() {
 
                       </div>
 
-                      <div className="min-w-[220px]">
+                        <div className="min-w-[260px]">
 
-                        <label className="block text-sm font-medium text-gray-600 mb-2">
-                          Application Status
-                        </label>
+                              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
 
-                        <select
-                          value={
-                            application.status
-                          }
-                          onChange={(e) =>
-                            handleStatusChange(
-                              application._id,
-                              e.target.value
-                            )
-                          }
-                          className="w-full border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
-                        >
+                                Application Status
 
-                          <option>
-                            Applied
-                          </option>
+                              </h3>
 
-                          <option>
-                            Shortlisted
-                          </option>
+                              {/* Current Status */}
 
-                          <option>
-                            Interview Scheduled
-                          </option>
+                              <div className="mb-4">
 
-                          <option>
-                            Selected
-                          </option>
+                                <span
+                                  className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold
+                                  ${
+                                    application.status === "Applied"
+                                      ? "bg-blue-100 text-blue-700"
+                                      : application.status === "Shortlisted"
+                                      ? "bg-yellow-100 text-yellow-700"
+                                      : application.status === "Interview Scheduled"
+                                      ? "bg-purple-100 text-purple-700"
+                                      : application.status === "Selected"
+                                      ? "bg-green-100 text-green-700"
+                                      : "bg-red-100 text-red-700"
+                                  }`}
+                                >
+                                
+                                  <i
+                                    className={`mr-2
+                                    ${
+                                      application.status === "Selected"
+                                        ? "fa-solid fa-circle-check"
+                                        : application.status === "Rejected"
+                                        ? "fa-solid fa-circle-xmark"
+                                        : application.status === "Interview Scheduled"
+                                        ? "fa-solid fa-calendar-check"
+                                        : application.status === "Shortlisted"
+                                        ? "fa-solid fa-star"
+                                        : "fa-solid fa-hourglass-half"
+                                    }`}
+                                  ></i>
 
-                          <option>
-                            Rejected
-                          </option>
-
-                        </select>
-
-                      </div>
+                                  {application.status}
+                                  
+                                </span>
+                                  
+                              </div>
+                                  
+                              {/* Update Status */}
+                                  
+                              <label className="block text-sm font-medium text-gray-600 mb-2">
+                                  
+                                Update Status
+                                  
+                              </label>
+                                  
+                              <select
+                                value={application.status}
+                                onChange={(e) =>
+                                  handleStatusChange(
+                                    application._id,
+                                    e.target.value
+                                  )
+                                }
+                                className="w-full rounded-xl border border-gray-300 bg-white p-3 shadow-sm focus:border-orange-400 focus:ring-2 focus:ring-orange-300 outline-none"
+                              >
+                              
+                                <option>Applied</option>
+                              
+                                <option>Shortlisted</option>
+                              
+                                <option>Interview Scheduled</option>
+                              
+                                <option>Selected</option>
+                              
+                                <option>Rejected</option>
+                              
+                              </select>
+                              
+                        </div>                      
 
                     </div>
 

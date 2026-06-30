@@ -43,9 +43,7 @@ function LoginPage() {
         data.student.role
       );
 
-      alert(
-        "Login Successful"
-      );
+      toast.success("Login Successful");
 
       if (
         data.student.role ===
@@ -76,7 +74,7 @@ function LoginPage() {
 
     } catch (error) {
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
         "Login Failed"
       );
