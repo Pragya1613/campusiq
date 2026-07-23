@@ -8,6 +8,7 @@ import {
   Link,
 } from "react-router-dom";
 
+import toast from "react-hot-toast";
 import PublicLayout from "../layouts/PublicLayout";
 import { loginUser } from "../services/authService";
 import { AuthContext } from "../context/AuthContext";

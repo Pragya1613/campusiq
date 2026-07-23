@@ -15,6 +15,8 @@ import {
 } from "../services/profileService";
 
 import toast from "react-hot-toast";
+import { deleteAccount } from "../services/authService";
+import ConfirmModal from "../components/ConfirmModal";
 
 function ProfilePage() {
 
@@ -23,6 +25,9 @@ function ProfilePage() {
 
   const [resumeFile, setResumeFile] =
     useState(null);
+
+  const [showDeleteModal, setShowDeleteModal] =
+    useState(false);
 
   const [formData, setFormData] =
     useState({
@@ -118,18 +123,18 @@ function ProfilePage() {
 
     };
 
-  const handleChange =
-    (e) => {
-
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+    
+      if (name === "phone") {
+        if (!/^\d*$/.test(value)) return; // sirf numbers
+        if (value.length > 10) return;    // max 10 digits
+      }
+    
       setFormData({
-
         ...formData,
-
-        [e.target.name]:
-          e.target.value,
-
+        [name]: value,
       });
-
     };
 
   const handleResumeChange =
@@ -220,6 +225,41 @@ function ProfilePage() {
 
     };
 
+    const handleDeleteAccount = async () => {
+    
+      try {
+      
+        const data =
+          await deleteAccount();
+      
+        toast.success(data.message);
+      
+        setShowDeleteModal(false);
+      
+        localStorage.removeItem("token");
+        localStorage.removeItem("student");
+      
+        navigate("/login",{
+          replace: true,
+        });
+      
+      }
+    
+      catch (error) {
+      
+        toast.error(
+        
+          error.response?.data?.message ||
+        
+          "Failed to delete account"
+        
+        );
+      
+      }
+    
+    };    
+
+
   return (
 
     <PublicLayout>
@@ -238,8 +278,6 @@ function ProfilePage() {
               
               </div>
 
-              <h1 className="text-2xl font-bold text-slate-900">
-
                 <h1 className="text-3xl font-bold text-slate-900">
                   Welcome back, {formData.fullName.split(" ")[0]} 
                 </h1>
@@ -248,7 +286,7 @@ function ProfilePage() {
                   Keep your profile updated to improve your placement opportunities.
                 </p>
 
-              </h1>
+              
 
               <p className="text-slate-500 mt-3">
 
@@ -332,11 +370,12 @@ function ProfilePage() {
                 <div className="grid md:grid-cols-3 gap-5">
 
                   <input
-                    type="text"
+                    type="tel"
                     name="phone"
-                    placeholder="Phone Number"
                     value={formData.phone}
                     onChange={handleChange}
+                    maxLength={10}
+                    pattern="[0-9]{10}"
                     className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#172554] focus:border-[#172554] transition-all duration-200"
                   />
 
@@ -675,6 +714,56 @@ function ProfilePage() {
 
               </button>
 
+              {/* Danger Zone */}
+                            
+              <div className="mt-12 border border-red-200 rounded-2xl bg-red-50 p-8">
+                            
+                <div className="flex items-start gap-4">
+                            
+                  <i className="fa-solid fa-triangle-exclamation text-3xl text-red-500"></i>
+                            
+                  <div className="flex-1">
+                            
+                    <h2 className="text-2xl font-bold text-red-700">
+                            
+                      Danger Zone
+                            
+                    </h2>
+                            
+                    <p className="text-gray-600 mt-2">
+                            
+                      Deleting your account will permanently remove your profile,
+                      applications and uploaded resume.
+                            
+                      This action cannot be undone.
+                            
+                    </p>
+                            
+                    <button
+              
+                      type="button"
+                            
+                      onClick={() =>
+                        setShowDeleteModal(true)
+                      }
+                    
+                      className="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-semibold transition"
+                    
+                    >
+                    
+                      <i className="fa-solid fa-trash mr-2"></i>
+                    
+                      Delete My Account
+                    
+                    </button>
+                    
+                  </div>
+                    
+                </div>
+                    
+              </div>              
+
+
             </form>
 
           </div>
@@ -683,6 +772,25 @@ function ProfilePage() {
 
       </div>
 
+        <ConfirmModal
+
+          isOpen={showDeleteModal}
+
+          title="Delete Account"
+
+          message="Your profile, applications and resume will be permanently deleted. This action cannot be undone."
+
+          confirmText="Delete Forever"
+
+          cancelText="Cancel"
+
+          onConfirm={handleDeleteAccount}
+
+          onClose={() =>
+            setShowDeleteModal(false)
+          }
+        
+        />
     </PublicLayout>
 
   );

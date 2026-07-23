@@ -11,6 +11,7 @@ const {
   getCurrentStudent,
   getProfile,
   updateProfile,
+  deleteAccount,
 } = require("../controllers/authController");
 
 // ---------- Public Routes ----------
@@ -32,6 +33,14 @@ router.put(
   protect,
   upload.single("resume"),
   updateProfile
+);
+
+// Delete Account
+
+router.delete(
+  "/delete-account",
+  protect,
+  deleteAccount
 );
 
 module.exports = router;

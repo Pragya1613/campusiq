@@ -79,6 +79,8 @@ const studentSchema = new mongoose.Schema(
 
     phone: {
       type: String,
+      required: true,
+      match: [/^[0-9]{10}$/ , "Phone number must be exactly 10 digits"]
     },
 
     linkedinUrl: {
@@ -135,6 +137,44 @@ const studentSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+  }
+);
+
+// Cascade Delete Applications
+
+studentSchema.pre(
+  "findOneAndDelete",
+  async function (next) {
+
+    try {
+
+      const student =
+        await this.model.findOne(
+          this.getFilter()
+        );
+
+      if (student) {
+
+        await mongoose
+          .model("Application")
+          .deleteMany({
+          
+            studentId: student._id,
+          
+          });        
+
+      }
+
+      next();
+
+    }
+
+    catch (error) {
+
+      next(error);
+
+    }
+
   }
 );
 

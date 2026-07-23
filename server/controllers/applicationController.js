@@ -1,9 +1,57 @@
 const Application = require("../models/Application");
+const Job = require("../models/Job");
+const Student = require("../models/Student");
 
 // Apply Job
 const applyJob = async (req, res) => {
   try {
     const { jobId } = req.body;
+
+    const job = await Job.findById(jobId);
+      
+    if (!job) {
+    
+      return res.status(404).json({
+        message: "Job not found",
+      });
+    
+    }
+
+    const student = await Student.findById(req.user.id);
+
+      if (!student) {
+      
+        return res.status(404).json({
+          message: "Student not found",
+        });
+      
+      }
+
+      if (student.cgpa < job.eligibilityCgpa) {
+      
+        return res.status(400).json({
+        
+          message: `Minimum CGPA required is ${job.eligibilityCgpa}`,
+        
+        });
+      
+      }
+      
+    if (!job.isActive) {
+
+      if (job.deadline && new Date(job.deadline) < new Date()) {
+      
+        return res.status(400).json({
+          message: "Application deadline has passed",
+        });
+      
+      }
+
+      return res.status(400).json({
+        message: "This job is no longer accepting applications",
+      });
+    
+    }
 
     const existingApplication =
       await Application.findOne({
@@ -76,9 +124,19 @@ const getAllApplications = async (
         )
         .populate("jobId");
 
-    res.status(200).json(
-      applications
-    );
+        const validApplications =
+        applications.filter(
+        
+        (app)=>
+        
+        app.studentId &&
+        app.jobId
+        
+        );
+        
+      return res.status(200).json(
+        validApplications
+      );
 
   } catch (error) {
     res.status(500).json({

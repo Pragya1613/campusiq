@@ -1,6 +1,7 @@
 const cloudinary = require("../config/cloudinary");
 const streamifier = require("streamifier");
 const Student = require("../models/Student");
+const Application = require("../models/Application");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -35,20 +36,21 @@ const registerStudent = async (req, res) => {
         10
       );
 
+const userRole = role || "student";
 const student = await Student.create({
   fullName,
   email,
   password: hashedPassword,
 
-  role: role || "student",
+  role: userRole,
 
   enrollmentNumber:
-    role === "student"
+    userRole === "student"
       ? enrollmentNumber
       : undefined,
 
   branch:
-    role === "student"
+    userRole === "student"
       ? branch
       : undefined,
 });
@@ -342,10 +344,58 @@ const getProfile = async (req, res) => {
   }
 };
 
+// Delete Account
+const deleteAccount = async (req, res) => {
+
+  try {
+
+    const student = await Student.findById(
+      req.user.id
+    );
+
+    if (!student) {
+
+      return res.status(404).json({
+
+        message: "Student not found",
+
+      });
+
+    }
+
+    // Delete student
+
+    await Student.findByIdAndDelete(
+
+      req.user.id
+
+    );
+
+    return res.status(200).json({
+
+      message: "Account deleted successfully",
+
+    });
+
+  }
+
+  catch (error) {
+
+    return res.status(500).json({
+
+      message: error.message,
+
+    });
+
+  }
+
+};
+
 module.exports = {
   registerStudent,
   loginStudent,
   getCurrentStudent,
   updateProfile,
   getProfile,
+  deleteAccount,
 };

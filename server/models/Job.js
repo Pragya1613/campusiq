@@ -55,4 +55,44 @@ const jobSchema = new mongoose.Schema(
   }
 );
 
+    // ================================
+    // Cascade Delete Applications
+    // ================================
+    
+    jobSchema.pre(
+      "findOneAndDelete",
+      async function (next) {
+      
+        try {
+        
+          const job =
+            await this.model.findOne(
+              this.getFilter()
+            );
+          
+          if (job) {
+          
+            await mongoose
+              .model("Application")
+              .deleteMany({
+              
+                jobId: job._id,
+              
+              });
+            
+          }
+        
+          next();
+        
+        }
+      
+        catch (error) {
+        
+          next(error);
+        
+        }
+      
+      }
+    );
+
 module.exports = mongoose.model("Job", jobSchema);
