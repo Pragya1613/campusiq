@@ -2,20 +2,19 @@ const express = require("express");
 
 const router = express.Router();
 
-const protect = require(
-  "../middleware/authMiddleware"
-);
+const protect = require("../middleware/authMiddleware");
+const authorize = require("../middleware/authorize");
 
 const {
   getDashboardStats,
   getStudentDashboard,
-} = require(
-  "../controllers/dashboardController"
-);
+} = require("../controllers/dashboardController");
 
 // Admin Dashboard
 router.get(
   "/",
+  protect,
+  authorize("admin"),
   getDashboardStats
 );
 
@@ -23,6 +22,7 @@ router.get(
 router.get(
   "/student",
   protect,
+  authorize("student"),
   getStudentDashboard
 );
 
