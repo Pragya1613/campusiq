@@ -17,6 +17,14 @@ import {
 
 } from "recharts";
 
+import {
+  isJobActive,
+  isJobExpired,
+  formatDate,
+  formatPackage,
+} from "../utils/jobUtils";
+
+
 function AdminDashboardPage() {
 
   const [stats, setStats] =
@@ -137,21 +145,15 @@ function AdminDashboardPage() {
           <div>
 
             <p className="uppercase tracking-[0.3em] text-sm font-semibold text-orange-500">
-
               Admin Portal
-
             </p>
 
             <h1 className="text-5xl font-bold text-[#172554] mt-2">
-
               Welcome Back, Admin
-
             </h1>
 
             <p className="text-gray-500 text-lg mt-3">
-
               Monitor placements, manage opportunities and track student recruitment.
-
             </p>
 
           </div>
@@ -162,9 +164,7 @@ function AdminDashboardPage() {
           >
           
             <i className="fa-solid fa-plus"></i>
-
             Create New Job
-
           </Link>
 
         </div>
@@ -442,12 +442,12 @@ function AdminDashboardPage() {
                     
                         <span
                           className={`px-3 py-1 rounded-full text-sm font-medium ${
-                            job.isActive
+                            isJobActive(job)
                               ? "bg-green-100 text-green-700"
                               : "bg-red-100 text-red-700"
                           }`}
                         >
-                          {job.isActive ? "Active" : "Closed"}
+                          {isJobActive(job) ? "Active" : "Closed"}
                         </span>
                         
                       </div>

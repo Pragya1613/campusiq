@@ -37,7 +37,7 @@ const applyJob = async (req, res) => {
       
       }
       
-    if (!job.isActive) {
+    if (!isJobActive(job)) {
 
       if (job.deadline && new Date(job.deadline) < new Date()) {
       

@@ -3,6 +3,12 @@ import PublicLayout from "../layouts/PublicLayout";
 import { getAllJobs } from "../services/jobService";
 import { applyForJob } from "../services/applicationService";
 import toast from "react-hot-toast";
+import {
+  isJobActive,
+  isJobExpired,
+  formatDate,
+  formatPackage,
+} from "../utils/jobUtils";
 
 function JobsPage() {
   const [jobs, setJobs] = useState([]);
@@ -70,7 +76,7 @@ function JobsPage() {
               filteredJobs.map((job) => {
                 const alreadyApplied = job.alreadyApplied;
                 const eligible = job.eligible;
-                const closed = !job.isActive;
+                const closed = !isJobActive(job);
 
                 return (
                   <div
@@ -114,12 +120,12 @@ function JobsPage() {
                         Status :
                         <span
                           className={`ml-1 font-semibold ${
-                            job.isActive
+                            isJobActive(job)
                               ? "text-green-600"
                               : "text-red-500"
                           }`}
                         >
-                          {job.isActive ? "Active" : "Closed"}
+                          {isJobActive(job) ? "Active" : "Closed"}
                         </span>
                       </p>
 

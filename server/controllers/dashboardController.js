@@ -2,6 +2,7 @@ const Student = require("../models/Student");
 const Job = require("../models/Job");
 const Application = require("../models/Application");
 
+
 // ================================
 // Admin Dashboard
 // ================================
@@ -15,13 +16,27 @@ const getDashboardStats = async (req, res) => {
         role:"student",
       });
 
-    const totalJobs =
-      await Job.countDocuments();
+    const jobs = await Job.find();
+        
+    const totalJobs = jobs.length;
+        
+    const activeJobs = jobs.filter((job) => {
+      if (!job.isActive) return false;
+    
+      if (!job.deadline) return true;
+    
+      const today = new Date();
+      const deadline = new Date(job.deadline);
+    
+      today.setHours(0, 0, 0, 0);
+      deadline.setHours(0, 0, 0, 0);
+    
+      return deadline >= today;
+    }).length;
+    
+    const closedJobs = totalJobs - activeJobs;  
 
-    const activeJobs =
-      await Job.countDocuments({
-        isActive: true,
-      });
+   
 
     const totalApplications =
       await Application.countDocuments();
@@ -60,7 +75,7 @@ const getDashboardStats = async (req, res) => {
         const recentJobs =
           await Job.find()
             .select(
-              "title companyName isActive createdAt"
+              "title companyName isActive deadline createdAt"
             )
             .sort({
               createdAt: -1,
@@ -168,6 +183,8 @@ const getDashboardStats = async (req, res) => {
       totalJobs,
 
       activeJobs,
+
+      closedJobs,
 
       totalApplications,
 
