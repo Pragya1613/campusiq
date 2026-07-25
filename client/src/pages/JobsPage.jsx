@@ -10,6 +10,7 @@ import {
   formatPackage,
 } from "../utils/jobUtils";
 
+
 function JobsPage() {
   const [jobs, setJobs] = useState([]);
   const [search, setSearch] = useState("");

@@ -374,6 +374,7 @@ function ProfilePage() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
+                    placeholder="Phone Number"
                     maxLength={10}
                     pattern="[0-9]{10}"
                     className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#172554] focus:border-[#172554] transition-all duration-200"

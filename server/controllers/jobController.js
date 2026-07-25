@@ -1,11 +1,38 @@
 const Job = require("../models/Job");
 const Student = require("../models/Student");
 const Application = require("../models/Application");
+const { sendEmail } = require("../services/emailService");
+const EMAIL_SUBJECTS = require("../utils/emailSubjects");
 
 // Create Job
 const createJob = async (req, res) => {
   try {
     const job = await Job.create(req.body);
+
+
+const students = await Student.find(
+  {role: "student"},
+  "fullName email"
+);
+
+    for (const student of students) {
+      await sendEmail({
+        to: student.email,
+        subject: EMAIL_SUBJECTS.JOB_POSTED,
+        template: "jobPosted",
+        data: {
+          studentName: student.fullName,
+          companyName: job.companyName,
+          jobTitle: job.title,
+          packageOffered: job.package
+            ? `₹ ${job.package} LPA`
+            : "As per company standards",
+          location: job.location,
+          deadline: new Date(job.deadline).toLocaleDateString("en-IN"),
+          jobId: job._id,
+        },
+      });
+    }
 
     res.status(201).json({
       message: "Job created successfully",

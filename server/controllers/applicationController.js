@@ -1,6 +1,9 @@
 const Application = require("../models/Application");
 const Job = require("../models/Job");
 const Student = require("../models/Student");
+const { isJobActive } = require("../utils/jobUtils");
+const { sendEmail } = require("../services/emailService");
+const EMAIL_SUBJECTS = require("../utils/emailSubjects");
 
 // Apply Job
 const applyJob = async (req, res) => {
@@ -70,6 +73,19 @@ const applyJob = async (req, res) => {
         studentId: req.user.id,
         jobId,
       });
+
+      await sendEmail({
+        to: student.email,
+        subject: EMAIL_SUBJECTS.APPLICATION_RECEIVED,
+        template: "applicationReceived",
+        data: {
+          studentName: student.fullName,
+          companyName: job.companyName,
+          jobTitle: job.title,
+          applicationDate: new Date().toLocaleDateString("en-IN"),
+        },
+      });
+
 
     res.status(201).json({
       message: "Application submitted",
@@ -159,7 +175,7 @@ const updateApplicationStatus =
           {
             new: true,
           }
-        );
+        ); 
 
       if (!application) {
         return res.status(404).json({
@@ -167,6 +183,73 @@ const updateApplicationStatus =
             "Application not found",
         });
       }
+
+      await application.populate([
+        { path: "studentId" },
+        { path: "jobId" },
+      ]);
+
+
+      switch (application.status) {
+        case "Shortlisted":
+          await sendEmail({
+            to: application.studentId.email,
+            subject: EMAIL_SUBJECTS.SHORTLISTED,
+            template: "shortlisted",
+            data: {
+              studentName: application.studentId.fullName,
+              companyName: application.jobId.companyName,
+              jobTitle: application.jobId.title,
+            },
+          });
+          break;
+        
+        case "Selected":
+          await sendEmail({
+            to: application.studentId.email,
+            subject: EMAIL_SUBJECTS.SELECTED,
+            template: "selected",
+            data: {
+              studentName: application.studentId.fullName,
+              companyName: application.jobId.companyName,
+              jobTitle: application.jobId.title,
+            },
+          });
+          break;
+        
+        case "Rejected":
+          await sendEmail({
+            to: application.studentId.email,
+            subject: EMAIL_SUBJECTS.REJECTED,
+            template: "rejected",
+            data: {
+              studentName: application.studentId.fullName,
+              companyName: application.jobId.companyName,
+              jobTitle: application.jobId.title,
+            },
+          });
+          break;
+
+        case "Interview Scheduled":
+          await sendEmail({
+            to: application.studentId.email,
+            subject: EMAIL_SUBJECTS.INTERVIEW_SCHEDULED,
+            template: "interviewScheduled",
+            data: {
+              studentName: application.studentId.fullName,
+              companyName: application.jobId.companyName,
+              jobTitle: application.jobId.title,
+              interviewDate: "To be announced",
+              interviewTime: "To be announced",
+              interviewMode: "Details will be shared on your dashboard",
+            },
+          });
+          break;          
+        
+        default:
+          break;
+      }
+
 
       res.status(200).json({
         message:

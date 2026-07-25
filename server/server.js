@@ -14,6 +14,7 @@ const applicationRoutes = require("./routes/applicationRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 
 const app = express();
+const emailRoutes = require("./routes/emailRoutes");
 
 connectDB();
 
@@ -30,6 +31,7 @@ app.use("/api/colleges", collegeRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications",applicationRoutes);
 app.use("/api/dashboard",dashboardRoutes);
+app.use("/api/email", emailRoutes);
 
 
 app.get("/", (req, res) => {

@@ -4,6 +4,8 @@ const Student = require("../models/Student");
 const Application = require("../models/Application");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { sendEmail } = require("../services/emailService");
+const EMAIL_SUBJECTS = require("../utils/emailSubjects");
 
 // Register Student
 const registerStudent = async (req, res) => {
@@ -54,6 +56,16 @@ const student = await Student.create({
       ? branch
       : undefined,
 });
+
+    await sendEmail({
+      to: student.email,
+      subject: EMAIL_SUBJECTS.WELCOME,
+      template: "welcome",
+      data: {
+        studentName: student.fullName,
+      },
+    });
+
     const studentData =
       student.toObject();
 
@@ -345,6 +357,7 @@ const getProfile = async (req, res) => {
 };
 
 // Delete Account
+
 const deleteAccount = async (req, res) => {
 
   try {
@@ -390,6 +403,7 @@ const deleteAccount = async (req, res) => {
   }
 
 };
+
 
 module.exports = {
   registerStudent,
