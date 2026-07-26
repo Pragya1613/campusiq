@@ -27,6 +27,9 @@ function LoginPage() {
   const [password, setPassword] =
     useState("");
 
+  const [showPassword, setShowPassword] =
+    useState(false);
+
   const handleSubmit = async (e) => {
 
     e.preventDefault();
@@ -134,7 +137,7 @@ function LoginPage() {
               <i className="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
 
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
                 onChange={(e) =>
@@ -142,9 +145,26 @@ function LoginPage() {
                     e.target.value
                   )
                 }
-                className="w-full border rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                className="w-full border rounded-xl py-3 pl-12 pr-12 focus:outline-none focus:ring-2 focus:ring-orange-400"
                 required
               />
+
+            <button
+              type="button"
+              onClick={() =>
+                setShowPassword(!showPassword)
+              }
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-500"
+            >
+              <i
+                className={
+                  showPassword
+                    ? "fa-solid fa-eye-slash"
+                    : "fa-solid fa-eye"
+                }
+              ></i>
+            </button>
+
 
             </div>
 
