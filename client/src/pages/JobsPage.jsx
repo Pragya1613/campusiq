@@ -14,19 +14,57 @@ import {
 function JobsPage() {
   const [jobs, setJobs] = useState([]);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search.trim());
+    }, 300);
+  
+    return () => clearTimeout(timer);
+  }, [search]);
 
-  const fetchData = async () => {
+  useEffect(() => {
+    fetchData(currentPage, debouncedSearch);
+  }, [currentPage, debouncedSearch]);
+
+
+  const fetchData = async (
+    page = currentPage,
+    searchText = debouncedSearch
+  ) => {
+
+    setLoading(true);
+    setError("");
     try {
-      const jobsData = await getAllJobs();
-      setJobs(jobsData);
+      const data = await getAllJobs({
+        page,
+        search: searchText,
+      });
+
+      if (page > data.totalPages && data.totalPages > 0) {
+        setCurrentPage(data.totalPages);
+        return;
+      }
+
+      setJobs(data.jobs);
+      setTotalPages(data.totalPages);
+    
     } catch (error) {
       console.log(error);
+      setError("Failed to load jobs.");
       toast.error("Failed to load jobs");
     }
+    finally {
+      setLoading(false);
+}
   };
 
   const handleApply = async (jobId) => {
@@ -36,19 +74,13 @@ function JobsPage() {
       toast.success(data.message);
 
       // Refresh jobs after applying
-      fetchData();
+      fetchData(currentPage, debouncedSearch);
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Application Failed"
       );
     }
   };
-
-  const filteredJobs = jobs.filter(
-    (job) =>
-      job.title.toLowerCase().includes(search.toLowerCase()) ||
-      job.companyName.toLowerCase().includes(search.toLowerCase())
-  );
 
   return (
     <PublicLayout>
@@ -67,14 +99,31 @@ function JobsPage() {
               type="text"
               placeholder="Search by Job Title or Company..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1);
+              }}
               className="w-full md:w-96 px-4 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
 
+
+          {loading && (
+            <div className="bg-blue-50 border border-blue-200 text-blue-700 rounded-xl p-4 mb-6 text-center">
+              Loading jobs...
+            </div>
+          )}
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 mb-6 text-center">
+              {error}
+            </div>
+          )}
+
+
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-            {filteredJobs.length > 0 ? (
-              filteredJobs.map((job) => {
+            {jobs.length > 0 ? (
+              jobs.map((job) => {
                 const alreadyApplied = job.alreadyApplied;
                 const eligible = job.eligible;
                 const closed = !isJobActive(job);
@@ -191,9 +240,54 @@ function JobsPage() {
                 </h2>
 
                 <p className="text-gray-500 mt-2">
-                  No placement opportunities available.
+                  {search.trim()
+                    ? `No jobs found for "${search.trim()}".`
+                    : "No placement opportunities available."}
                 </p>
+
               </div>
+            )}
+
+            {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2 mt-10">
+              <button
+                onClick={() => setCurrentPage((prev) => prev - 1)}
+                disabled={currentPage === 1}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  currentPage === 1
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-[#172554] text-white hover:bg-[#0f1d46]"
+                }`}
+              >
+                Previous
+              </button>
+              
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentPage(index + 1)}
+                  className={`w-10 h-10 rounded-lg font-semibold transition ${
+                    currentPage === index + 1
+                      ? "bg-orange-500 text-white"
+                      : "bg-white border hover:bg-gray-100"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+
+              <button
+                onClick={() => setCurrentPage((prev) => prev + 1)}
+                disabled={currentPage === totalPages}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  currentPage === totalPages
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-[#172554] text-white hover:bg-[#0f1d46]"
+                }`}
+              >
+                Next
+              </button>
+            </div>
             )}
           </div>
         </div>

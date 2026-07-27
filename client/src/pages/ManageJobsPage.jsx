@@ -19,6 +19,14 @@ import {
 function ManageJobsPage() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalJobs, setTotalJobs] = useState(0);
+  const [activeJobs, setActiveJobs] = useState(0);
+  const [closedJobs, setClosedJobs] = useState(0);
+
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
 
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("All");
@@ -33,15 +41,60 @@ function ManageJobsPage() {
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [jobToDelete, setJobToDelete] = useState(null);
+  const [companies, setCompanies] = useState(["All"]);
+
 
   useEffect(() => {
-    fetchJobs();
-  }, []);
+    fetchJobs(currentPage, debouncedSearch);
+  }, [
+    currentPage,
+    debouncedSearch,
+    company,
+    status,
+    location,
+    cgpa,
+    pkg,
+    sort,
+  ]);
 
-  const fetchJobs = async () => {
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search.trim());
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+
+  const fetchJobs = async (
+    page = currentPage,
+    searchText = debouncedSearch
+  ) => {
     try {
       setLoading(true);
-      setJobs(await getAllJobs());
+    
+    const data = await getAllJobs({
+      page,
+      search: searchText,
+      company,
+      status,
+      location,
+      cgpa,
+      package: pkg,
+      sort,
+    });
+    
+    setJobs(data.jobs);
+
+    setCompanies(["All", ...data.companies]);
+    
+    setTotalPages(data.totalPages);
+    
+    setTotalJobs(data.totalJobs);
+    setActiveJobs(data.activeJobs);
+    setClosedJobs(data.closedJobs);
+    
     } catch (err) {
       console.error(err);
       toast.error("Failed to load jobs");
@@ -50,72 +103,11 @@ function ManageJobsPage() {
     }
   };
 
-
-  const companies = useMemo(
-    () => ["All", ...new Set(jobs.map((j) => j.companyName).filter(Boolean))],
-    [jobs]
-  );
-
   const locations = useMemo(
     () => ["All", ...new Set(jobs.map((j) => j.location).filter(Boolean))],
     [jobs]
   );
 
-  const filteredJobs = useMemo(() => {
-    let filtered = [...jobs];
-
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      filtered = filtered.filter((j) =>
-        `${j.title || ""} ${j.companyName || ""} ${j.location || ""}`
-          .toLowerCase()
-          .includes(q)
-      );
-    }
-
-    if (status !== "All") {
-      filtered = filtered.filter((j) =>
-        status === "Active" ? j.isActive : !j.isActive
-      );
-    }
-
-    if (company !== "All") {
-      filtered = filtered.filter((j) => j.companyName === company);
-    }
-
-    if (location !== "All") {
-      filtered = filtered.filter((j) => j.location === location);
-    }
-
-    if (cgpa !== "All") {
-      filtered = filtered.filter(
-        (j) => Number(j.eligibilityCgpa || 0) >= Number(cgpa)
-      );
-    }
-
-    if (pkg !== "All") {
-      filtered = filtered.filter(
-        (j) => Number(j.package || 0) >= Number(pkg)
-      );
-    }
-
-    filtered.sort((a, b) => {
-      switch (sort) {
-        case "Oldest":
-          return new Date(a.createdAt) - new Date(b.createdAt);
-        case "Highest Package":
-          return Number(b.package || 0) - Number(a.package || 0);
-        case "Lowest Package":
-          return Number(a.package || 0) - Number(b.package || 0);
-        case "Deadline":
-          return new Date(a.deadline || 0) - new Date(b.deadline || 0);
-        default:
-          return new Date(b.createdAt) - new Date(a.createdAt);
-      }
-    });
-
-    return filtered;
-  }, [jobs, search, status, company, location, cgpa, pkg, sort]);
 
   const handleEdit = (job) => {
     setSelectedJob(job);
@@ -148,10 +140,6 @@ function ManageJobsPage() {
     }
   };
 
-  const totalJobs = jobs.length;
-  const activeJobs = jobs.filter(isJobActive).length;
-  const closedJobs = totalJobs - activeJobs;
-
   const resetFilters = () => {
     setSearch("");
     setStatus("All");
@@ -160,6 +148,7 @@ function ManageJobsPage() {
     setCgpa("All");
     setPkg("All");
     setSort("Newest");
+    setCurrentPage(1);
   };
 
   if (loading) {
@@ -255,7 +244,10 @@ function ManageJobsPage() {
               type="text"
               placeholder="🔍 Search jobs..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1);
+              }}
               className="w-full lg:w-80 border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#172554]"
             />
 
@@ -263,7 +255,10 @@ function ManageJobsPage() {
 
               <select
                 value={sort}
-                onChange={(e) => setSort(e.target.value)}
+                onChange={(e) => {
+                  setSort(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="border rounded-xl px-4 py-3 min-w-[220px]"
               >
                 <option value="Newest">Newest</option>
@@ -291,7 +286,10 @@ function ManageJobsPage() {
 
             <select
               value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              onChange={(e) => {
+                setStatus(e.target.value);
+                setCurrentPage(1);
+              }}
               className="border rounded-xl px-4 py-3"
             >
               <option value="All">Status</option>
@@ -301,7 +299,10 @@ function ManageJobsPage() {
 
             <select
               value={company}
-              onChange={(e) => setCompany(e.target.value)}
+              onChange={(e) => {
+                setCompany(e.target.value);
+                setCurrentPage(1);
+              }}
               className="border rounded-xl px-4 py-3"
             >
               <option value="All">Company</option>
@@ -318,7 +319,10 @@ function ManageJobsPage() {
 
             <select
               value={location}
-              onChange={(e) => setLocation(e.target.value)}
+              onChange={(e) => {
+                setLocation(e.target.value);
+                setCurrentPage(1);
+              }}
               className="border rounded-xl px-4 py-3"
             >
               <option value="All">Location</option>
@@ -335,7 +339,10 @@ function ManageJobsPage() {
 
             <select
               value={cgpa}
-              onChange={(e) => setCgpa(e.target.value)}
+              onChange={(e) => {
+                setCgpa(e.target.value);
+                setCurrentPage(1);
+              }}
               className="border rounded-xl px-4 py-3"
             >
               <option value="All">Min CGPA</option>
@@ -347,7 +354,10 @@ function ManageJobsPage() {
 
             <select
               value={pkg}
-              onChange={(e) => setPkg(e.target.value)}
+              onChange={(e) => {
+                setPkg(e.target.value);
+                setCurrentPage(1);
+              }}
               className="border rounded-xl px-4 py-3"
             >
               <option value="All">Min Package</option>
@@ -364,8 +374,8 @@ function ManageJobsPage() {
         {/* Jobs Grid Starts Here */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-          {filteredJobs.length > 0 ? (
-            filteredJobs.map((job) => (
+          {jobs.length > 0 ? (
+            jobs.map((job) => (
               <div
                 key={job._id}
                 className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 border border-gray-200"
@@ -451,6 +461,49 @@ function ManageJobsPage() {
             </div>
           )}
         </div>
+
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 mt-10">
+            <button
+              onClick={() => setCurrentPage((prev) => prev - 1)}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded-lg font-medium transition ${
+                currentPage === 1
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-[#172554] text-white hover:bg-[#0f1d46]"
+              }`}
+            >
+              Previous
+            </button>
+            
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentPage(index + 1)}
+                className={`w-10 h-10 rounded-lg font-semibold transition ${
+                  currentPage === index + 1
+                    ? "bg-orange-500 text-white"
+                    : "bg-white border hover:bg-gray-100"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+        
+            <button
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 rounded-lg font-medium transition ${
+                currentPage === totalPages
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-[#172554] text-white hover:bg-[#0f1d46]"
+              }`}
+            >
+              Next
+            </button>
+          </div>
+        )}
+
       </div>
 
       <EditJobModal

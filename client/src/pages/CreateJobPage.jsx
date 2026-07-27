@@ -37,10 +37,15 @@ function CreateJobPage() {
     setDescription,
   ] = useState("");
 
+  const [submitting, setSubmitting] = useState(false);
+
   const handleSubmit =
     async (e) => {
 
       e.preventDefault();
+
+      if (submitting) return;
+      setSubmitting(true);
 
       try {
 
@@ -100,6 +105,10 @@ function CreateJobPage() {
 
         toast.error("Failed To Create Job");
 
+      }
+
+      finally {
+        setSubmitting(false);
       }
 
     };
@@ -305,9 +314,16 @@ function CreateJobPage() {
 
               <button
                 type="submit"
-                className="w-full bg-orange-500 text-white py-4 rounded-xl text-lg font-semibold hover:bg-orange-600 transition"
+                disabled={submitting}
+                className={`w-full py-4 rounded-xl text-lg font-semibold transition
+                  ${
+                    submitting
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-orange-500 hover:bg-orange-600"
+                  }
+                  text-white`}
               >
-                Create Job
+                {submitting ? "Creating Job..." : "Create Job"}
               </button>
 
             </form>

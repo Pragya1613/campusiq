@@ -3,8 +3,30 @@ import api from "./api";
 // =======================
 // Get All Jobs
 // =======================
-export const getAllJobs = async () => {
-  const response = await api.get("/jobs");
+export const getAllJobs = async ({
+  page = 1,
+  search = "",
+  company = "All",
+  status = "All",
+  location = "All",
+  cgpa = "All",
+  package: minPackage = "All",
+  sort = "Newest",
+} = {}) => {
+  const response = await api.get("/jobs", {
+    params: {
+      page,
+      limit: 9,
+      search,
+      company,
+      status,
+      location,
+      cgpa,
+      package: minPackage,
+      sort,
+    },
+  });
+
   return response.data;
 };
 
