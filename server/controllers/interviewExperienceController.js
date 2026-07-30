@@ -191,7 +191,7 @@ const getCompanyExperiences = async (req, res) => {
       companyName,
     })
       .select(
-        "title roleApplied package anonymous createdAt upvoteCount commentCount studentId"
+      "title roleApplied package anonymous createdAt upvoteCount commentCount studentId upvotes"
       )
       .populate({
         path: "studentId",
@@ -210,6 +210,16 @@ const getCompanyExperiences = async (req, res) => {
       ...experience,
       student: experience.studentId,
       studentId: undefined,
+    
+      isOwner:
+        req.user &&
+        experience.studentId?._id?.toString() === req.user.id,
+    
+      upvoted:
+        req.user &&
+        experience.upvotes.some(
+          (id) => id.toString() === req.user.id
+        ),
     }));
 
 
@@ -247,7 +257,7 @@ const getInterviewExperienceById = async (req, res) => {
 
     const experience = await InterviewExperience.findById(id)
       .select(
-        "companyName title roleApplied package experience interviewProcess tips anonymous upvoteCount commentCount createdAt studentId"
+      "companyName title roleApplied package experience interviewProcess tips anonymous upvoteCount commentCount createdAt studentId upvotes"
       )
       .populate({
         path: "studentId",
@@ -266,8 +276,17 @@ const getInterviewExperienceById = async (req, res) => {
       ...experience,
       student: experience.studentId,
       studentId: undefined,
+    
+      isOwner:
+        req.user &&
+        experience.studentId?._id?.toString() === req.user.id,
+    
+      upvoted:
+        req.user &&
+        experience.upvotes.some(
+          (id) => id.toString() === req.user.id
+        ),
     };
-
 
     res.status(200).json({
       experience: formattedExperience,

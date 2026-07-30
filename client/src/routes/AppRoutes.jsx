@@ -18,6 +18,11 @@ import AdminApplicationsPage from "../pages/AdminApplicationsPage";
 import ProfilePage
 from "../pages/ProfilePage";
 import ManageJobsPage from "../pages/ManageJobsPage";
+import ExperiencesPage from "../pages/ExperiencesPage";
+import CompanyExperiencesPage from "../pages/CompanyExperiencesPage";
+import ShareExperiencePage from "../pages/ShareExperiencePage";
+import ExperienceDetailsPage from "../pages/ExperienceDetailsPage";
+
 
 function AppRoutes() {
   return (
@@ -113,6 +118,46 @@ function AppRoutes() {
       <Route
         path="/manage-jobs"
           element={<ManageJobsPage />}
+      />
+
+
+      <Route
+        path="/experiences"
+        element={
+          <ProtectedRoute>
+            <ExperiencesPage />
+          </ProtectedRoute>
+        }
+      />
+
+
+      <Route
+        path="/experiences/:companyName"
+        element={
+          <ProtectedRoute>
+            <CompanyExperiencesPage />
+          </ProtectedRoute>
+        }
+      />
+
+
+      <Route
+        path="/share-experience"
+        element={
+          <ProtectedRoute>
+            <ShareExperiencePage />
+          </ProtectedRoute>
+        }
+      />
+
+
+      <Route
+        path="/experience/:id"
+        element={
+          <ProtectedRoute>
+            <ExperienceDetailsPage />
+          </ProtectedRoute>
+        }
       />
 
     </Routes>

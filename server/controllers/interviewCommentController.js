@@ -79,11 +79,30 @@ const getComments = asyncHandler(async (req, res) => {
     .lean();
 
 
-    const formattedComments = comments.map((comment) => ({
-      ...comment,
-      student: comment.studentId,
-      studentId: undefined,
-    }));
+
+  const formattedComments = await Promise.all(
+    comments.map(async (comment) => {
+      const replyCount = await InterviewComment.countDocuments({
+        parentComment: comment._id,
+      });
+    
+      return {
+        ...comment,
+        student: comment.studentId,
+        studentId: undefined,
+        replyCount,
+        isOwner:
+          req.user &&
+          comment.studentId?._id?.toString() === req.user.id,
+        liked:
+          req.user &&
+          comment.likes.some(
+            (id) => id.toString() === req.user.id
+          ),
+      };
+    })
+  );
+
     
 
   res.status(200).json({
@@ -168,6 +187,9 @@ const getReplies = asyncHandler(async (req, res) => {
       ...reply,
       student: reply.studentId,
       studentId: undefined,
+      isOwner:
+        req.user &&
+        reply.studentId?._id?.toString() === req.user.id,
     }));
 
 

@@ -16,11 +16,11 @@ const  protect  = require("../middleware/authMiddleware");
 
 router.post("/", protect, createInterviewExperience);
 
-router.get("/companies", getInterviewCompanies);
+router.get("/companies",protect, getInterviewCompanies);
 
-router.get("/company/:companyName", getCompanyExperiences);
+router.get("/company/:companyName", protect, getCompanyExperiences);
 
-router.get("/:id", getInterviewExperienceById);
+router.get("/:id", protect, getInterviewExperienceById);
 
 router.put("/:id", protect, updateInterviewExperience);
 
