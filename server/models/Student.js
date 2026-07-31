@@ -128,6 +128,35 @@ const studentSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    
+    resumeUploadedAt: {
+  type: Date,
+},
+
+  portfolioUrl: {
+    type: String,
+  },
+  
+  achievements: [
+    {
+      title: String,
+      description: String,
+    },
+  ],
+  
+  positionsOfResponsibility: [
+    {
+      title: String,
+      organization: String,
+      duration: String,
+    },
+  ],
+  
+  parsedResumeData: {
+    type: mongoose.Schema.Types.Mixed,
+  },
+
+
 
     profileCompleted: {
       type: Boolean,

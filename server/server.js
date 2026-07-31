@@ -20,6 +20,11 @@ const interviewExperienceRoutes = require("./routes/interviewExperienceRoutes");
 
 const interviewCommentRoutes = require("./routes/interviewCommentRoutes");
 
+
+const aiRoutes = require("./routes/ai.routes");
+
+
+
 connectDB();
 
 app.use(express.json());
@@ -47,6 +52,10 @@ app.use(
   "/api/interview-comments",
   interviewCommentRoutes
 );
+
+
+app.use("/api/ai", aiRoutes);
+
 
 const PORT = process.env.PORT || 5000;
 

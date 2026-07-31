@@ -60,7 +60,7 @@ function CommentForm({ experienceId, onCommentAdded }) {
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-2.5 rounded-lg transition"
+            className="bg-[#323c62] hover:bg-[#0f1d46] disabled:bg-[#152b6e] text-white px-6 py-2.5 rounded-lg transition"
           >
             {loading ? "Posting..." : "Post Comment"}
           </button>

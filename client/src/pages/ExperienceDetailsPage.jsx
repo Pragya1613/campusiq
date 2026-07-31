@@ -158,7 +158,7 @@ function ExperienceDetailsPage() {
 
           <Link
             to={`/experiences/${encodeURIComponent(companyName)}`}
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 mb-8"
+            className="inline-flex items-center gap-2 text-[#172554] hover:text-[#0f1d46] mb-8"
           >
             <i className="fa-solid fa-arrow-left"></i>
 

@@ -16,7 +16,12 @@ import {
 
 import toast from "react-hot-toast";
 import { deleteAccount } from "../services/authService";
+
+import { extractProfile } from "../services/aiService";
+
 import ConfirmModal from "../components/ConfirmModal";
+
+import AIReviewModal from "../components/ai/AIReviewModal";
 
 function ProfilePage() {
 
@@ -28,6 +33,13 @@ function ProfilePage() {
 
   const [showDeleteModal, setShowDeleteModal] =
     useState(false);
+
+  const [isReviewing, setIsReviewing] = useState(false);
+
+  const [showAIReview, setShowAIReview] = useState(false);
+
+  const [aiReviewData, setAIReviewData] = useState(null);
+
 
   const [formData, setFormData] =
     useState({
@@ -224,6 +236,38 @@ function ProfilePage() {
       }
 
     };
+
+
+
+    const handleAIReview = async () => {
+      if (!resumeFile) {
+        toast.error("Please select a resume first.");
+        return;
+      }
+    
+      try {
+        setIsReviewing(true);
+      
+        const response = await extractProfile(resumeFile);
+
+        setAIReviewData(response.data);
+
+        setShowAIReview(true);
+
+        toast.success("AI Review completed successfully.");
+      
+      } catch (error) {
+        console.error(error);
+      
+        toast.error(
+          error.response?.data?.message ||
+          "AI Review failed."
+        );
+      } finally {
+        setIsReviewing(false);
+      }
+    };
+
 
     const handleDeleteAccount = async () => {
     
@@ -688,6 +732,19 @@ function ProfilePage() {
                           <i className="fa-solid fa-download"></i>
                           <span>Download PDF</span>
                         </button>
+
+
+                        <button
+                          type="button"
+                          onClick={handleAIReview}
+                          disabled={isReviewing}
+                          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-violet-600 text-white hover:bg-violet-700 transition disabled:opacity-60"
+                        >
+                          <i className="fa-solid fa-wand-magic-sparkles"></i>
+                                              
+                          {isReviewing ? "Reviewing..." : "AI Review"}
+                        </button>
+
                   
                       </div>
                   
@@ -792,6 +849,16 @@ function ProfilePage() {
           }
         
         />
+
+
+        <AIReviewModal
+          isOpen={showAIReview}
+          onClose={() => setShowAIReview(false)}
+          data={aiReviewData}
+          loading={isReviewing}
+        />
+
+
     </PublicLayout>
 
   );

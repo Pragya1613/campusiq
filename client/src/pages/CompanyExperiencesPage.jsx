@@ -25,7 +25,7 @@ function CompanyExperiencesPage() {
 
             <Link
               to="/experiences"
-              className="hover:text-blue-600 transition"
+              className="hover:text-[#172554] transition"
             >
               Interview Experiences
             </Link>
@@ -67,7 +67,7 @@ function CompanyExperiencesPage() {
 
               <Link
                 to="/share-experience"
-                className="px-5 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition flex items-center gap-2"
+                className="px-5 py-3 rounded-xl bg-[#172554] text-white font-medium hover:bg-[#0f1d46] transition flex items-center gap-2"
               >
                 <i className="fa-solid fa-plus"></i>
 

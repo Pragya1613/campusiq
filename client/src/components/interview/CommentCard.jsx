@@ -160,7 +160,7 @@ function CommentCard({ comment, onRefresh }) {
                 fetchReplies();
               }
             }}
-            className="text-blue-600 hover:underline"
+            className="text-[#050a1a] hover:underline"
           >
             {showReplies
               ? "Hide Replies"

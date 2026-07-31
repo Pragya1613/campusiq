@@ -61,12 +61,14 @@ function Navbar() {
               Applications
             </Link>
 
-            <Link to="/profile">
-              Profile
-            </Link>
 
             <Link to="/experiences">
               Experiences
+            </Link>
+
+
+            <Link to="/profile">
+              Profile
             </Link>
 
             <button

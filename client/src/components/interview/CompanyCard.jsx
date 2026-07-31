@@ -43,7 +43,7 @@ function CompanyCard({ company }) {
         <div className="grid grid-cols-2 gap-4 mb-5">
 
           <div className="rounded-xl bg-slate-50 p-3">
-            <div className="flex items-center gap-2 text-blue-600">
+            <div className="flex items-center gap-2 text-[#172554]">
               <i className="fa-solid fa-thumbs-up"></i>
 
               <span className="font-semibold">
@@ -87,7 +87,7 @@ function CompanyCard({ company }) {
 
         <Link
           to={`/experiences/${encodeURIComponent(companyName)}`}
-          className="flex-1 text-center rounded-lg bg-blue-600 text-white py-2.5 font-medium hover:bg-blue-700 transition"
+          className="flex-1 text-center rounded-lg bg-[#172554] text-white py-2.5 font-medium hover:bg-[#0f1d46] transition"
         >
           View Experiences
         </Link>

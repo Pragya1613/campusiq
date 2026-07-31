@@ -117,7 +117,7 @@ function ExperienceCard({ experience }) {
 
         <Link
           to={`/experience/${_id}`}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#172554] text-white font-medium hover:bg-[#0f1d46] transition"
         >
           Read More
 
