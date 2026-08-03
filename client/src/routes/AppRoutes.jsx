@@ -22,7 +22,7 @@ import ExperiencesPage from "../pages/ExperiencesPage";
 import CompanyExperiencesPage from "../pages/CompanyExperiencesPage";
 import ShareExperiencePage from "../pages/ShareExperiencePage";
 import ExperienceDetailsPage from "../pages/ExperienceDetailsPage";
-
+import AIScanPage from "../pages/AIScanPage";
 
 function AppRoutes() {
   return (
@@ -159,6 +159,17 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+
+      <Route
+       path="/ai-scans"
+       element={
+         <ProtectedRoute>
+           <AIScanPage />
+         </ProtectedRoute>
+       }
+      />
+
 
     </Routes>
   );

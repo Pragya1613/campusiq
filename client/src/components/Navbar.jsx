@@ -67,9 +67,15 @@ function Navbar() {
             </Link>
 
 
+            <Link to="/ai-scans">
+              AIScan
+            </Link>
+
+
             <Link to="/profile">
               Profile
             </Link>
+
 
             <button
               onClick={handleLogout}

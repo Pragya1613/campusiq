@@ -17,7 +17,12 @@ import {
 import toast from "react-hot-toast";
 import { deleteAccount } from "../services/authService";
 
-import { extractProfile } from "../services/aiService";
+import {
+  extractProfile,
+  analyzeProfile,
+  extractExistingResume,
+  saveAIScan,
+} from "../services/aiService";
 
 import ConfirmModal from "../components/ConfirmModal";
 
@@ -214,9 +219,7 @@ function ProfilePage() {
 
         toast.success("Profile Updated Successfully");
 
-        navigate(
-          "/dashboard"
-        );
+        await fetchProfile();
 
       }
 
@@ -238,35 +241,212 @@ function ProfilePage() {
     };
 
 
+  
 
     const handleAIReview = async () => {
-      if (!resumeFile) {
-        toast.error("Please select a resume first.");
-        return;
-      }
-    
-      try {
-        setIsReviewing(true);
-      
-        const response = await extractProfile(resumeFile);
+  try {
 
-        setAIReviewData(response.data);
+    setIsReviewing(true);
 
-        setShowAIReview(true);
+    let extractedResponse;
 
-        toast.success("AI Review completed successfully.");
-      
-      } catch (error) {
-        console.error(error);
-      
-        toast.error(
-          error.response?.data?.message ||
-          "AI Review failed."
-        );
-      } finally {
-        setIsReviewing(false);
-      }
+    // ===========================================
+    // STEP 1 : Extract Profile
+    // ===========================================
+
+    if (resumeFile) {
+
+      // New resume selected
+      const formData = new FormData();
+
+      formData.append("resume", resumeFile);
+
+      extractedResponse =
+        await extractProfile(formData);
+
+    }
+
+    else if (formData.resumeUrl) {
+
+      // Use already uploaded resume
+      extractedResponse =
+        await extractExistingResume();
+
+    }
+
+    else {
+
+      toast.error("Please upload a resume first.");
+
+      return;
+
+    }
+
+    console.log(
+      "Extracted Profile:",
+      extractedResponse
+    );
+
+    // ===========================================
+    // STEP 2 : Analyze Profile
+    // ===========================================
+
+    const analysisResponse =
+      await analyzeProfile(
+        extractedResponse.data
+      );
+
+    console.log(
+      "Analysis:",
+      analysisResponse
+    );
+
+    // ===========================================
+    // STEP 3 : Merge Both Responses
+    // ===========================================
+
+    const finalAIData = {
+
+      ...extractedResponse.data,
+
+      analysis:
+        analysisResponse.data,
+
     };
+
+    console.log(
+      "========== EXTRACTED =========="
+    );
+
+    console.log(extractedResponse);
+
+    console.log(
+      "========== ANALYSIS =========="
+    );
+
+    console.log(analysisResponse);
+
+    console.log(
+      "========== FINAL =========="
+    );
+
+    console.log(finalAIData);
+
+    setAIReviewData(finalAIData);
+
+    setShowAIReview(true);
+
+  }
+
+  catch (error) {
+
+    console.error(error);
+
+    toast.error(
+
+      error.response?.data?.message ||
+
+      "AI Review Failed"
+
+    );
+
+  }
+
+  finally {
+
+    setIsReviewing(false);
+
+  }
+
+};
+
+
+
+
+const handleSaveAIScan = async () => {
+
+  try {
+
+    if (!aiReviewData) {
+
+      toast.error("Nothing to save.");
+
+      return;
+
+    }
+
+    const payload = {
+
+      extractedProfile: {
+
+        fullName: aiReviewData.fullName,
+
+        email: aiReviewData.email,
+
+        phone: aiReviewData.phone,
+
+        branch: aiReviewData.branch,
+
+        passingYear: aiReviewData.passingYear,
+
+        cgpa: aiReviewData.cgpa,
+
+        githubUrl: aiReviewData.githubUrl,
+
+        linkedinUrl: aiReviewData.linkedinUrl,
+
+        leetcodeUrl: aiReviewData.leetcodeUrl,
+
+        portfolioUrl: aiReviewData.portfolioUrl,
+
+        skills: aiReviewData.skills,
+
+        projects: aiReviewData.projects,
+
+        internships: aiReviewData.internships,
+
+        certifications: aiReviewData.certifications,
+
+        achievements: aiReviewData.achievements,
+
+        positionsOfResponsibility:
+          aiReviewData.positionsOfResponsibility,
+
+      },
+
+      ...aiReviewData.analysis,
+
+    };
+
+    const response =
+      await saveAIScan(payload);
+
+    toast.success(
+      response.message
+    );
+
+    setShowAIReview(false);
+
+    setAIReviewData(null);
+
+  }
+
+  catch (error) {
+
+    console.error(error);
+
+    toast.error(
+
+      error.response?.data?.message ||
+
+      "Failed to save AI Scan."
+
+    );
+
+  }
+
+};
+
 
 
     const handleDeleteAccount = async () => {
@@ -851,12 +1031,13 @@ function ProfilePage() {
         />
 
 
-        <AIReviewModal
-          isOpen={showAIReview}
-          onClose={() => setShowAIReview(false)}
-          data={aiReviewData}
-          loading={isReviewing}
-        />
+      <AIReviewModal
+        isOpen={showAIReview}
+        onClose={() => setShowAIReview(false)}
+        onSave={handleSaveAIScan}
+        data={aiReviewData}
+        loading={isReviewing}
+      />
 
 
     </PublicLayout>
