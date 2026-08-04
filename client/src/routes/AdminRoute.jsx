@@ -9,7 +9,7 @@ function AdminRoute({ children }) {
   } = useContext(AuthContext);
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/" replace />;
   }
 
   if (role !== "admin") {

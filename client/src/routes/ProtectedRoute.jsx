@@ -13,7 +13,7 @@ function ProtectedRoute({
   } = useContext(AuthContext);
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/" replace />;
   }
 
   return children;
