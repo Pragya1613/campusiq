@@ -54,6 +54,23 @@ function AdminApplicationsPage() {
   const handleStatusChange =
     async (id, status) => {
 
+      // Store previous applications
+      const previousApplications =
+        applications;
+
+      // Immediately update UI
+      setApplications((prevApplications) =>
+        prevApplications.map(
+          (application) =>
+            application._id === id
+              ? {
+                  ...application,
+                  status: status,
+                }
+              : application
+        )
+      );
+
       try {
 
         await updateApplicationStatus(
@@ -65,11 +82,19 @@ function AdminApplicationsPage() {
           "Status Updated Successfully"
         );
 
-        fetchApplications();
-
       } catch (error) {
 
         console.log(error);
+
+        // Restore previous state if API fails
+        setApplications(
+          previousApplications
+        );
+
+        toast.error(
+          error.response?.data?.message ||
+          "Failed To Update Status"
+        );
 
       }
 
@@ -178,6 +203,7 @@ function AdminApplicationsPage() {
                 <span className="text-sm font-medium text-slate-600">
 
                   {applications.length}{" "}
+
                   {applications.length === 1
                     ? "Application"
                     : "Applications"}
@@ -219,7 +245,6 @@ function AdminApplicationsPage() {
 
           ) : (
 
-
             /* Applications */
 
             <div className="space-y-5">
@@ -231,7 +256,6 @@ function AdminApplicationsPage() {
                     key={application._id}
                     className="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300 p-6 sm:p-7"
                   >
-
 
                     <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
 
