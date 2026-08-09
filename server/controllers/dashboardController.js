@@ -250,7 +250,7 @@ const getStudentDashboard = async (
 
         studentId: req.user.id,
 
-        status: "Applied",
+        // status: "Applied",
 
       });
 
