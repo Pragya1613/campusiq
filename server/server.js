@@ -56,9 +56,16 @@ app.use("/api/email", emailRoutes);
 app.use("/api/interview-experiences", interviewExperienceRoutes);
 
 
+// app.get("/", (req, res) => {
+//   res.send("CampusIQ Backend Running");
+// });
+
+
 app.get("/", (req, res) => {
-  res.send("CampusIQ Backend Running");
+  res.send("CampusIQ BACKEND DEPLOYMENT TEST - 123");
 });
+
+
 
 app.use(
   "/api/interview-comments",
