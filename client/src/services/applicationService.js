@@ -3,7 +3,7 @@ import api from "./api";
 export const applyForJob =
   async (jobId) => {
     const token =
-      localStorage.getItem(
+      sessionStorage.getItem(
         "token"
       );
 
@@ -25,7 +25,7 @@ export const applyForJob =
 export const getMyApplications =
   async () => {
     const token =
-      localStorage.getItem(
+      sessionStorage.getItem(
         "token"
       );
 

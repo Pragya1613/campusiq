@@ -218,7 +218,7 @@ function DashboardPage() {
 
             <button
               onClick={() => {
-                localStorage.removeItem("token");
+                sessionStorage.removeItem("token");
                 window.location.href = "/login";
               }}
               className="ml-1 px-5 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold shadow-md hover:shadow-lg transition"
@@ -289,7 +289,7 @@ function DashboardPage() {
 
             <button
               onClick={() => {
-                localStorage.removeItem("token");
+                sessionStorage.removeItem("token");
                 window.location.href = "/login";
               }}
               className="mt-2 px-4 py-3 rounded-lg bg-red-500 hover:bg-red-600 text-white font-semibold transition text-left"

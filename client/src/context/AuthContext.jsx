@@ -3,52 +3,30 @@ import {
   useState,
 } from "react";
 
-export const AuthContext =
-  createContext();
+export const AuthContext = createContext();
 
-function AuthProvider({
-  children,
-}) {
-  const [token, setToken] =
-    useState(
-      localStorage.getItem(
-        "token"
-      ) || null
-    );
+function AuthProvider({ children }) {
+  const [token, setToken] = useState(
+    sessionStorage.getItem("token") || null
+  );
 
-  const [role, setRole] =
-    useState(
-      localStorage.getItem(
-        "role"
-      ) || null
-    );
+  const [role, setRole] = useState(
+    sessionStorage.getItem("role") || null
+  );
 
-  const login = (
-    newToken,
-    newRole
-  ) => {
-    localStorage.setItem(
-      "token",
-      newToken
-    );
+  const login = (newToken, newRole) => {
+    sessionStorage.setItem("token", newToken);
 
-    localStorage.setItem(
-      "role",
-      newRole
-    );
+    sessionStorage.setItem("role", newRole);
 
     setToken(newToken);
     setRole(newRole);
   };
 
   const logout = () => {
-    localStorage.removeItem(
-      "token"
-    );
+    sessionStorage.removeItem("token");
 
-    localStorage.removeItem(
-      "role"
-    );
+    sessionStorage.removeItem("role");
 
     setToken(null);
     setRole(null);
@@ -61,8 +39,7 @@ function AuthProvider({
         role,
         login,
         logout,
-        isAuthenticated:
-          !!token,
+        isAuthenticated: !!token,
       }}
     >
       {children}

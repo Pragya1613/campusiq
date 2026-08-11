@@ -3,7 +3,7 @@ import api from "./api";
 export const getStudentDashboard =
   async () => {
     const token =
-      localStorage.getItem("token");
+      sessionStorage.getItem("token");
 
     const response =
       await api.get(

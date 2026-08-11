@@ -541,11 +541,11 @@ function ProfilePage() {
         setShowDeleteModal(false);
 
 
-        localStorage.removeItem(
+        sessionStorage.removeItem(
           "token"
         );
 
-        localStorage.removeItem(
+        sessionStorage.removeItem(
           "student"
         );
 

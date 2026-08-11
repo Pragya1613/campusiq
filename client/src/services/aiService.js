@@ -53,7 +53,7 @@ export const analyzeProfile = async (profile) => {
 export const extractExistingResume = async () => {
   try {
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     const response = await axios.post(
       `${API}/extract-existing-profile`,
@@ -84,7 +84,7 @@ export const extractExistingResume = async () => {
 export const saveAIScan = async (scanData) => {
   try {
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     const response = await axios.post(
       `${API}/save-scan`,
@@ -116,7 +116,7 @@ export const saveAIScan = async (scanData) => {
 export const getAIScanHistory = async () => {
   try {
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     const response = await axios.get(
       `${API}/history`,
@@ -147,7 +147,7 @@ export const getAIScanHistory = async () => {
 export const getAIScanById = async (id) => {
   try {
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     const response = await axios.get(
       `${API}/${id}`,
@@ -178,7 +178,7 @@ export const getAIScanById = async (id) => {
 export const deleteAIScan = async (id) => {
   try {
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     const response = await axios.delete(
       `${API}/${id}`,
